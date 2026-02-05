@@ -1,0 +1,1000 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚜 Fresh Farm Market - Direct From Farmers</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/order-page.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <h1>🚜 Fresh Farm Market</h1>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#home" onclick="loadContent('home')">Home</a></li>
+                <li><a href="#products" onclick="event.preventDefault(); loadContent('products'); return false;">Fresh Produce</a></li>
+                <li><a href="#farmers" onclick="event.preventDefault(); loadContent('farmers'); return false;">Our Farmers</a></li>
+                <li><a href="#sell" onclick="event.preventDefault(); showFarmerOnboarding(); return false;" class="sell-link">🌱 Sell Your Produce</a></li>
+                <li><a href="#about" onclick="event.preventDefault(); loadContent('about'); return false;">About Us</a></li>
+                <li><a href="#contact" onclick="event.preventDefault(); loadContent('contact'); return false;">Contact</a></li>
+            </ul>
+            <div class="auth-buttons" id="authButtons">
+                <button class="btn-login" id="loginBtn" onclick="showLoginModal()">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+                <button class="btn-register" id="registerBtn" onclick="showRegisterModal()">
+                    <i class="fas fa-user-plus"></i> Register
+                </button>
+                <div class="user-toolbar" id="userToolbar" style="display: flex;">
+                    <button class="cart-btn" onclick="showCart()" title="View Cart" style="background: #4CAF50; color: white; border: none; padding: 10px 15px; border-radius: 25px; cursor: pointer; margin-right: 10px;">
+                        <i class="fas fa-shopping-cart"></i> Cart (<span id="cartCount">0</span>)
+                    </button>
+                    <button class="cart-btn" onclick="testCartQuick()" title="Test Cart" style="background: #ff9800; color: white; border: none; padding: 10px 15px; border-radius: 25px; cursor: pointer; margin-right: 10px;">
+                        🔧 Test Cart
+                    </button>
+                    <button class="farmer-dashboard-btn" id="farmerDashboardBtn" onclick="showFarmerDashboard()" style="display: none;" title="Farmer Dashboard">
+                        <i class="fas fa-tractor"></i> Dashboard
+                    </button>
+                    <span class="welcome-text" id="welcomeText">Welcome M.CHANDINI!</span>
+                    <button class="btn-profile" onclick="showProfile()" style="background: #6c757d; color: white; border: none; padding: 8px 12px; border-radius: 20px; cursor: pointer; margin: 0 5px;">
+                        <i class="fas fa-user"></i> Profile
+                    </button>
+                    <button class="btn-logout" onclick="logout()" style="background: #dc3545; color: white; border: none; padding: 8px 12px; border-radius: 20px; cursor: pointer;">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </div>
+            </div>
+            <div class="hamburger" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-content">
+            <h3>Browse Categories</h3>
+            <ul>
+                <li><a href="#" onclick="filterProducts('vegetables')"><i class="fas fa-carrot"></i> Fresh Vegetables</a></li>
+                <li><a href="#" onclick="filterProducts('fruits')"><i class="fas fa-apple-alt"></i> Fresh Fruits</a></li>
+                <li><a href="#" onclick="filterProducts('herbs')"><i class="fas fa-leaf"></i> Herbs & Spices</a></li>
+                <li><a href="#" onclick="filterProducts('dairy')"><i class="fas fa-glass-whiskey"></i> Dairy Products</a></li>
+                <li><a href="#" onclick="filterProducts('grains')"><i class="fas fa-wheat"></i> Grains & Cereals</a></li>
+            </ul>
+            <h3>Find Farmers</h3>
+            <ul>
+                <li><a href="#" onclick="loadContent('local-farmers')"><i class="fas fa-home"></i> Local Farmers</a></li>
+                <li><a href="#" onclick="loadContent('organic-farmers')"><i class="fas fa-seedling"></i> Organic Farmers</a></li>
+                <li><a href="#" onclick="loadContent('seasonal')"><i class="fas fa-calendar-alt"></i> Seasonal Produce</a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <!-- Test Cart Button - Very Visible -->
+        <div style="background: linear-gradient(135deg, #ff6b6b, #ee5a24); padding: 20px; margin: 20px; border-radius: 15px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.2);">
+            <h2 style="color: white; margin-bottom: 15px;">🔧 CART FUNCTIONALITY TEST</h2>
+            <p style="color: white; margin-bottom: 20px;">Click these buttons to test the cart system:</p>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <button onclick="testCartQuick()" style="background: #4CAF50; color: white; border: none; padding: 15px 30px; border-radius: 25px; font-size: 18px; font-weight: bold; cursor: pointer;">
+                    🔧 Test Cart System
+                </button>
+                <button onclick="showCart()" style="background: #2196F3; color: white; border: none; padding: 15px 30px; border-radius: 25px; font-size: 18px; font-weight: bold; cursor: pointer;">
+                    🛒 Show Cart
+                </button>
+                <button onclick="loadContent('products')" style="background: #FF9800; color: white; border: none; padding: 15px 30px; border-radius: 25px; font-size: 18px; font-weight: bold; cursor: pointer;">
+                    🛍️ Shop Products
+                </button>
+            </div>
+        </div>
+        
+        <div class="hero-section">
+            <h1>🚜 Welcome to Fresh Farm Market</h1>
+            <p class="hero-text">Connect directly with local farmers and get the freshest produce delivered to your door!</p>
+            <div class="hero-stats">
+                <div class="stat">
+                    <h3>500+</h3>
+                    <p>Local Farmers</p>
+                </div>
+                <div class="stat">
+                    <h3>2000+</h3>
+                    <p>Happy Customers</p>
+                </div>
+                <div class="stat">
+                    <h3>100%</h3>
+                    <p>Fresh Guarantee</p>
+                </div>
+            </div>
+            <button class="cta-button" onclick="loadContent('products')">
+                <i class="fas fa-shopping-cart"></i> Start Shopping Fresh Produce
+            </button>
+        </div>
+        
+        <div class="content-section">
+            <h2>Why Choose Our Marketplace?</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">🚜</div>
+                    <h3>Direct from Farmers</h3>
+                    <p>Buy directly from local farmers, ensuring freshness and supporting your community.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🥬</div>
+                    <h3>Farm Fresh Quality</h3>
+                    <p>Get the freshest produce harvested within 24 hours of delivery.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🚚</div>
+                    <h3>Fast Delivery</h3>
+                    <p>Same-day or next-day delivery available from farms near you.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💰</div>
+                    <h3>Fair Prices</h3>
+                    <p>No middlemen means better prices for customers and fair pay for farmers.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h2><i class="fas fa-sign-in-alt"></i> Login to Fresh Farm Market</h2>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="loginUsername"><i class="fas fa-user"></i> Username:</label>
+                    <input type="text" id="loginUsername" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword"><i class="fas fa-lock"></i> Password:</label>
+                    <input type="password" id="loginPassword" name="password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-sign-in-alt"></i> Login
+                </button>
+            </form>
+            <p>Don't have an account? <a href="#" onclick="closeModal('loginModal'); showRegisterModal();">Register here</a></p>
+            <div id="loginMessage"></div>
+            <div class="demo-info">
+                <p><strong>Demo Account:</strong></p>
+                <p>Username: <code>demo</code> | Password: <code>demo123</code></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('registerModal')">&times;</span>
+            <h2><i class="fas fa-user-plus"></i> Join Fresh Farm Market</h2>
+            <form id="registerForm" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label for="regFullName"><i class="fas fa-user"></i> Full Name:</label>
+                    <input type="text" id="regFullName" name="fullName" required>
+                </div>
+                <div class="form-group">
+                    <label for="regUsername"><i class="fas fa-user-circle"></i> Username:</label>
+                    <input type="text" id="regUsername" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="regEmail"><i class="fas fa-envelope"></i> Email:</label>
+                    <input type="email" id="regEmail" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPassword"><i class="fas fa-lock"></i> Password:</label>
+                    <input type="password" id="regPassword" name="password" required minlength="6">
+                    <small>Minimum 6 characters</small>
+                </div>
+                <div class="form-group">
+                    <label for="regConfirmPassword"><i class="fas fa-lock"></i> Confirm Password:</label>
+                    <input type="password" id="regConfirmPassword" name="confirmPassword" required>
+                </div>
+                <div class="form-group">
+                    <label for="regPhone"><i class="fas fa-phone"></i> Phone:</label>
+                    <input type="tel" id="regPhone" name="phone">
+                </div>
+                <div class="form-group">
+                    <label for="regUserType"><i class="fas fa-users"></i> Account Type:</label>
+                    <select id="regUserType" name="userType" required>
+                        <option value="customer">🛒 Customer (Buy products)</option>
+                        <option value="farmer">🚜 Farmer (Sell products)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="regAddress"><i class="fas fa-map-marker-alt"></i> Address:</label>
+                    <textarea id="regAddress" name="address" rows="3" placeholder="Your complete address"></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-user-plus"></i> Register
+                </button>
+            </form>
+            <p>Already have an account? <a href="#" onclick="closeModal('registerModal'); showLoginModal();">Login here</a></p>
+            <div id="registerMessage"></div>
+        </div>
+    </div>
+
+    <!-- Cart Modal -->
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('cartModal')">&times;</span>
+            <h2><i class="fas fa-shopping-cart"></i> Shopping Cart</h2>
+            <div id="cartItems"></div>
+        </div>
+    </div>
+
+    <!-- Profile Modal -->
+    <div class="modal" id="profileModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('profileModal')">&times;</span>
+            <h2><i class="fas fa-user"></i> My Profile</h2>
+            <div id="profileContent"></div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div class="modal" id="checkoutModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('checkoutModal')">&times;</span>
+            <h2><i class="fas fa-credit-card"></i> Checkout</h2>
+            <div id="checkoutContent"></div>
+        </div>
+    </div>
+
+    <!-- Order Confirmation Modal -->
+    <div class="modal" id="orderConfirmModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('orderConfirmModal')">&times;</span>
+            <div id="orderConfirmContent"></div>
+        </div>
+    </div>
+
+    <!-- Farmer Dashboard Modal -->
+    <div class="modal" id="farmerDashboardModal">
+        <div class="modal-content large-modal">
+            <span class="close" onclick="closeModal('farmerDashboardModal')">&times;</span>
+            <h2><i class="fas fa-tractor"></i> Farmer Dashboard</h2>
+            <div class="dashboard-tabs">
+                <button class="tab-button active" onclick="farmMarket.showDashboardTab('products')">
+                    <i class="fas fa-seedling"></i> My Products
+                </button>
+                <button class="tab-button" onclick="farmMarket.showDashboardTab('add-product')">
+                    <i class="fas fa-plus"></i> Add Product
+                </button>
+                <button class="tab-button" onclick="farmMarket.showDashboardTab('orders')">
+                    <i class="fas fa-box"></i> Orders
+                </button>
+            </div>
+            <div id="dashboardContent">
+                <!-- Dashboard content will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Product Modal -->
+    <div class="modal" id="addProductModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('addProductModal')">&times;</span>
+            <h2><i class="fas fa-seedling"></i> Add New Product</h2>
+            <form id="addProductForm" onsubmit="farmMarket.addProduct(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productName"><i class="fas fa-tag"></i> Product Name:</label>
+                        <input type="text" id="productName" name="name" required placeholder="e.g., Organic Tomatoes">
+                    </div>
+                    <div class="form-group">
+                        <label for="productCategory"><i class="fas fa-list"></i> Category:</label>
+                        <select id="productCategory" name="category" required>
+                            <option value="">Select Category</option>
+                            <option value="vegetables">🥕 Vegetables</option>
+                            <option value="fruits">🍎 Fruits</option>
+                            <option value="grains">🌾 Grains</option>
+                            <option value="dairy">🥛 Dairy</option>
+                            <option value="herbs">🌿 Herbs</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productPrice"><i class="fas fa-dollar-sign"></i> Price per unit ($):</label>
+                        <input type="number" id="productPrice" name="price" step="0.01" min="0" required placeholder="0.00">
+                    </div>
+                    <div class="form-group">
+                        <label for="productUnit"><i class="fas fa-weight"></i> Unit:</label>
+                        <select id="productUnit" name="unit" required>
+                            <option value="lb">Per Pound (lb)</option>
+                            <option value="kg">Per Kilogram (kg)</option>
+                            <option value="piece">Per Piece</option>
+                            <option value="bunch">Per Bunch</option>
+                            <option value="dozen">Per Dozen</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="productDescription"><i class="fas fa-info-circle"></i> Description:</label>
+                    <textarea id="productDescription" name="description" rows="3" placeholder="Describe your product..."></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productStock"><i class="fas fa-boxes"></i> Stock Quantity:</label>
+                        <input type="number" id="productStock" name="stock" min="0" required placeholder="Available quantity">
+                    </div>
+                    <div class="form-group">
+                        <label for="productHarvest"><i class="fas fa-calendar"></i> Harvest Date:</label>
+                        <input type="date" id="productHarvest" name="harvestDate" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="productImage"><i class="fas fa-image"></i> Product Image URL:</label>
+                    <input type="url" id="productImage" name="image" placeholder="https://example.com/image.jpg">
+                </div>
+                <div class="form-group checkbox-group">
+                    <label class="checkbox-label">
+                        <input type="checkbox" id="productOrganic" name="organic">
+                        <span class="checkmark"></span>
+                        <i class="fas fa-leaf"></i> Certified Organic
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Add Product
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Farmer Onboarding Modal -->
+    <div class="modal" id="farmerOnboardingModal">
+        <div class="modal-content large-modal">
+            <span class="close" onclick="closeModal('farmerOnboardingModal')">&times;</span>
+            <h2><i class="fas fa-tractor"></i> Start Selling Your Produce</h2>
+            <div class="onboarding-intro">
+                <p>Join our marketplace and connect directly with customers who value fresh, local produce!</p>
+                <div class="benefits-grid">
+                    <div class="benefit-item">
+                        <i class="fas fa-dollar-sign"></i>
+                        <h4>Better Prices</h4>
+                        <p>Sell directly to customers without middlemen</p>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-users"></i>
+                        <h4>Direct Connection</h4>
+                        <p>Build relationships with local customers</p>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-chart-line"></i>
+                        <h4>Grow Your Business</h4>
+                        <p>Expand your reach and increase sales</p>
+                    </div>
+                    <div class="benefit-item">
+                        <i class="fas fa-leaf"></i>
+                        <h4>Support Sustainability</h4>
+                        <p>Promote local, sustainable farming</p>
+                    </div>
+                </div>
+            </div>
+            
+            <form id="farmerOnboardingForm" onsubmit="farmMarket.handleFarmerOnboarding(event)">
+                <h3><i class="fas fa-user"></i> Personal Information</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="farmerFullName"><i class="fas fa-user"></i> Full Name:</label>
+                        <input type="text" id="farmerFullName" name="fullName" required placeholder="Your full name">
+                    </div>
+                    <div class="form-group">
+                        <label for="farmerEmail"><i class="fas fa-envelope"></i> Email:</label>
+                        <input type="email" id="farmerEmail" name="email" required placeholder="your.email@example.com">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="farmerPhone"><i class="fas fa-phone"></i> Phone Number:</label>
+                        <input type="tel" id="farmerPhone" name="phone" required placeholder="(555) 123-4567">
+                    </div>
+                    <div class="form-group">
+                        <label for="farmerUsername"><i class="fas fa-user-circle"></i> Username:</label>
+                        <input type="text" id="farmerUsername" name="username" required placeholder="Choose a username">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="farmerPassword"><i class="fas fa-lock"></i> Password:</label>
+                        <input type="password" id="farmerPassword" name="password" required placeholder="Choose a secure password">
+                    </div>
+                    <div class="form-group">
+                        <label for="farmerConfirmPassword"><i class="fas fa-lock"></i> Confirm Password:</label>
+                        <input type="password" id="farmerConfirmPassword" name="confirmPassword" required placeholder="Confirm your password">
+                    </div>
+                </div>
+
+                <h3><i class="fas fa-tractor"></i> Farm Information</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="farmName"><i class="fas fa-seedling"></i> Farm Name:</label>
+                        <input type="text" id="farmName" name="farmName" required placeholder="Green Valley Farm">
+                    </div>
+                    <div class="form-group">
+                        <label for="farmSize"><i class="fas fa-expand-arrows-alt"></i> Farm Size (in acres):</label>
+                        <input type="number" id="farmSize" name="farmSize" min="0.1" step="0.1" required placeholder="5.0">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="farmLocation"><i class="fas fa-map-marker-alt"></i> Farm Location:</label>
+                    <input type="text" id="farmLocation" name="farmLocation" required placeholder="City, State, ZIP">
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="farmSpecialty"><i class="fas fa-carrot"></i> Primary Specialty:</label>
+                        <select id="farmSpecialty" name="farmSpecialty" required>
+                            <option value="">Select your specialty</option>
+                            <option value="vegetables">🥕 Vegetables</option>
+                            <option value="fruits">🍎 Fruits</option>
+                            <option value="grains">🌾 Grains & Cereals</option>
+                            <option value="dairy">🥛 Dairy Products</option>
+                            <option value="herbs">🌿 Herbs & Spices</option>
+                            <option value="mixed">🌻 Mixed Farming</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="farmExperience"><i class="fas fa-calendar-alt"></i> Experience (in years):</label>
+                        <input type="number" id="farmExperience" name="farmExperience" min="0" max="50" required placeholder="5">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="farmDescription"><i class="fas fa-info-circle"></i> Farm Description:</label>
+                    <textarea id="farmDescription" name="farmDescription" rows="3" placeholder="Tell customers about your farm, farming practices, and what makes your produce special..."></textarea>
+                </div>
+
+                <h3><i class="fas fa-certificate"></i> Certifications & Practices</h3>
+                <div class="certifications-grid">
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="certifications" value="organic">
+                        <span class="checkmark"></span>
+                        <i class="fas fa-leaf"></i> Organic Certified
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="certifications" value="sustainable">
+                        <span class="checkmark"></span>
+                        <i class="fas fa-recycle"></i> Sustainable Practices
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="certifications" value="gmo-free">
+                        <span class="checkmark"></span>
+                        <i class="fas fa-ban"></i> GMO-Free
+                    </label>
+                    <label class="checkbox-label">
+                        <input type="checkbox" name="certifications" value="pesticide-free">
+                        <span class="checkmark"></span>
+                        <i class="fas fa-shield-alt"></i> Pesticide-Free
+                    </label>
+                </div>
+
+                <h3><i class="fas fa-truck"></i> Delivery & Sales</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="deliveryRadius"><i class="fas fa-map-marked-alt"></i> Delivery Radius (miles):</label>
+                        <input type="number" id="deliveryRadius" name="deliveryRadius" min="1" max="100" required placeholder="25">
+                    </div>
+                    <div class="form-group">
+                        <label for="minOrder"><i class="fas fa-shopping-basket"></i> Minimum Order ($):</label>
+                        <input type="number" id="minOrder" name="minOrder" min="0" step="0.01" placeholder="0.00">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="deliveryDays"><i class="fas fa-calendar-check"></i> Available Delivery Days:</label>
+                    <div class="days-grid">
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="deliveryDays" value="monday">
+                            <span class="checkmark"></span>
+                            Monday
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="deliveryDays" value="tuesday">
+                            <span class="checkmark"></span>
+                            Tuesday
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="deliveryDays" value="wednesday">
+                            <span class="checkmark"></span>
+                            Wednesday
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="deliveryDays" value="thursday">
+                            <span class="checkmark"></span>
+                            Thursday
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="deliveryDays" value="friday">
+                            <span class="checkmark"></span>
+                            Friday
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="deliveryDays" value="saturday">
+                            <span class="checkmark"></span>
+                            Saturday
+                        </label>
+                        <label class="checkbox-label">
+                            <input type="checkbox" name="deliveryDays" value="sunday">
+                            <span class="checkmark"></span>
+                            Sunday
+                        </label>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary btn-large">
+                        <i class="fas fa-rocket"></i> Start Selling Now!
+                    </button>
+                    <p class="terms-text">
+                        By joining, you agree to our <a href="#" onclick="showTerms()">Terms of Service</a> and 
+                        <a href="#" onclick="showPrivacy()">Privacy Policy</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div class="toast" id="toast"></div>
+
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <p>Loading...</p>
+    </div>
+
+    <!-- <script src="js/simple-app.js"></script> Disabled problematic JavaScript -->
+    <script>
+        // Simple Working Cart System - Complete replacement
+        let cart = JSON.parse(localStorage.getItem('farmMarketCart')) || [];
+        let currentUser = { id: 1, fullName: 'M.CHANDINI', username: 'chandini' }; // Auto-login for testing
+
+        // Initialize cart immediately
+        function initializeCart() {
+            console.log('Cart system initializing...');
+            updateCartCount();
+            console.log('Cart system initialized with', cart.length, 'items');
+        }
+
+        // Test cart function
+        function testCartQuick() {
+            console.log('Testing cart system...');
+            alert('🔧 Cart Test:\n\n' + 
+                  'Cart items: ' + cart.length + '\n' +
+                  'Cart functions: ' + (typeof showCart) + '\n' +
+                  'Ready to test!');
+            
+            // Add a test item if cart is empty
+            if (cart.length === 0) {
+                addToCart(99, 'Test Product', 50, 'test.jpg');
+            } else {
+                showCart();
+            }
+        }
+
+        function updateCartCount() {
+            const count = cart.reduce((total, item) => total + item.quantity, 0);
+            document.getElementById('cartCount').textContent = count;
+        }
+
+        function showCart() {
+            console.log('showCart called');
+            displayCartItems();
+            document.getElementById('cartModal').style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        function displayCartItems() {
+            const cartItemsDiv = document.getElementById('cartItems');
+            
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = `
+                    <div style="text-align: center; padding: 40px;">
+                        <div style="font-size: 60px; margin-bottom: 20px;">🛒</div>
+                        <h3>Your cart is empty</h3>
+                        <p>Add some fresh products to get started!</p>
+                        <button onclick="loadContent('products')" style="background: #4CAF50; color: white; border: none; padding: 12px 24px; border-radius: 25px; cursor: pointer; margin-top: 15px;">
+                            Start Shopping
+                        </button>
+                    </div>
+                `;
+                return;
+            }
+
+            let total = 0;
+            let html = '<div style="max-height: 400px; overflow-y: auto;">';
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                html += `
+                    <div style="display: flex; align-items: center; gap: 15px; padding: 15px 0; border-bottom: 1px solid #eee;">
+                        <img src="${item.image || 'images/default.jpg'}" alt="${item.name}" 
+                             style="width: 60px; height: 60px; object-fit: cover; border-radius: 8px;"
+                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIGZpbGw9IiNmNWY1ZjUiLz48dGV4dCB4PSIzMCIgeT0iMzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgZmlsbD0iI2NjYyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPvCfjYM8L3RleHQ+PC9zdmc+'">
+                        <div style="flex: 1;">
+                            <div style="font-weight: bold; color: #333; margin-bottom: 5px;">${item.name}</div>
+                            <div style="color: #4CAF50; margin-bottom: 10px;">₹${item.price}/kg</div>
+                            <div style="display: flex; align-items: center; gap: 10px;">
+                                <button onclick="updateQuantity(${item.id}, -1)" 
+                                        style="background: #ddd; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer;">-</button>
+                                <span style="font-weight: bold; min-width: 30px; text-align: center;">${item.quantity}</span>
+                                <button onclick="updateQuantity(${item.id}, 1)" 
+                                        style="background: #ddd; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer;">+</button>
+                            </div>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-weight: bold; color: #4CAF50; font-size: 16px; margin-bottom: 5px;">₹${itemTotal}</div>
+                            <button onclick="removeFromCart(${item.id})" 
+                                    style="background: #f44336; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; font-size: 12px;">Remove</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            html += `
+                <div style="border-top: 2px solid #4CAF50; padding-top: 20px; margin-top: 20px;">
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 16px;">
+                        <span>Subtotal (${cart.length} items):</span>
+                        <span>₹${total}</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                        <span>Delivery:</span>
+                        <span style="color: #4CAF50; font-weight: bold;">Free</span>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; margin-bottom: 20px; font-size: 20px; font-weight: bold; color: #4CAF50; border-top: 1px solid #eee; padding-top: 10px;">
+                        <span>Total:</span>
+                        <span>₹${total}</span>
+                    </div>
+                    <button onclick="proceedToCheckout()" 
+                            style="width: 100%; background: linear-gradient(135deg, #4CAF50, #45a049); color: white; border: none; padding: 15px; border-radius: 30px; font-size: 18px; font-weight: bold; cursor: pointer; margin-top: 10px;">
+                        ✅ Proceed to Checkout
+                    </button>
+                </div>
+            `;
+            
+            cartItemsDiv.innerHTML = html;
+        }
+
+        function addToCart(id, name, price, image = 'images/default.jpg') {
+            const existingItem = cart.find(item => item.id === id);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: id,
+                    name: name,
+                    price: price,
+                    image: image,
+                    quantity: 1
+                });
+            }
+            
+            localStorage.setItem('farmMarketCart', JSON.stringify(cart));
+            updateCartCount();
+            showToast(`✅ ${name} added to cart!`);
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            localStorage.setItem('farmMarketCart', JSON.stringify(cart));
+            updateCartCount();
+            displayCartItems();
+            showToast('🗑️ Item removed from cart');
+        }
+
+        function updateQuantity(id, change) {
+            const item = cart.find(item => item.id === id);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    removeFromCart(id);
+                } else {
+                    localStorage.setItem('farmMarketCart', JSON.stringify(cart));
+                    updateCartCount();
+                    displayCartItems();
+                }
+            }
+        }
+
+        function proceedToCheckout() {
+            closeModal('cartModal');
+            showOrderPage();
+        }
+
+        function showOrderPage() {
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            document.getElementById('mainContent').innerHTML = `
+                <div style="max-width: 800px; margin: 0 auto; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                    <h1 style="text-align: center; color: #4CAF50; margin-bottom: 30px;">🛒 Complete Your Order</h1>
+                    <p style="text-align: center; font-size: 1.2rem; margin-bottom: 30px;">
+                        Total Amount: <strong style="color: #4CAF50; font-size: 1.5rem;">₹${total}</strong>
+                    </p>
+                    
+                    <form id="orderForm" style="max-width: 600px; margin: 0 auto;">
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: bold;">📝 Full Name *</label>
+                            <input type="text" id="fullName" required placeholder="Enter your full name" value="M.CHANDINI"
+                                   style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;">
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: bold;">📱 Phone Number *</label>
+                            <input type="tel" id="phone" required placeholder="Enter your phone number"
+                                   style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;">
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: bold;">🏠 Delivery Address *</label>
+                            <textarea id="address" required rows="3" placeholder="Enter your complete delivery address"
+                                      style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; resize: vertical;"></textarea>
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: bold;">💳 Payment Method *</label>
+                            <select id="payment" required style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;">
+                                <option value="">Choose payment method</option>
+                                <option value="Cash on Delivery">💵 Cash on Delivery</option>
+                                <option value="UPI Payment">📱 UPI Payment</option>
+                                <option value="Credit Card">💳 Credit Card</option>
+                                <option value="Net Banking">🏦 Net Banking</option>
+                            </select>
+                        </div>
+                        
+                        <div style="margin-bottom: 20px;">
+                            <label style="display: block; margin-bottom: 5px; font-weight: bold;">🕐 Preferred Delivery Time</label>
+                            <select id="deliveryTime" style="width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px;">
+                                <option value="Morning (9 AM - 12 PM)">🌅 Morning (9 AM - 12 PM)</option>
+                                <option value="Afternoon (12 PM - 4 PM)">☀️ Afternoon (12 PM - 4 PM)</option>
+                                <option value="Evening (4 PM - 8 PM)">🌆 Evening (4 PM - 8 PM)</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" style="width: 100%; background: linear-gradient(135deg, #4CAF50, #45a049); color: white; border: none; padding: 18px; border-radius: 30px; font-size: 20px; font-weight: bold; cursor: pointer; margin-top: 20px;">
+                            ✅ Place Order - ₹${total}
+                        </button>
+                    </form>
+                    
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button onclick="location.reload()" style="background: #6c757d; color: white; border: none; padding: 12px 24px; border-radius: 25px; cursor: pointer;">
+                            ← Back to Shopping
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('orderForm').onsubmit = function(e) {
+                e.preventDefault();
+                placeOrder();
+            };
+            
+            window.scrollTo(0, 0);
+        }
+
+        function placeOrder() {
+            const fullName = document.getElementById('fullName').value.trim();
+            const phone = document.getElementById('phone').value.trim();
+            const address = document.getElementById('address').value.trim();
+            const payment = document.getElementById('payment').value;
+            
+            if (!fullName || !phone || !address || !payment) {
+                alert('Please fill all required fields!');
+                return;
+            }
+            
+            // Generate order
+            const orderNumber = 'FF' + Date.now().toString().slice(-6);
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            // Clear cart
+            cart = [];
+            localStorage.setItem('farmMarketCart', JSON.stringify(cart));
+            updateCartCount();
+            
+            // Show success
+            showOrderSuccess(orderNumber, total, fullName, phone, address, payment);
+        }
+
+        function showOrderSuccess(orderNumber, total, fullName, phone, address, payment) {
+            document.getElementById('mainContent').innerHTML = `
+                <div style="max-width: 600px; margin: 0 auto; text-align: center; background: white; padding: 50px; border-radius: 15px; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                    <div style="font-size: 80px; color: #4CAF50; margin-bottom: 20px; animation: bounce 1s ease-in-out;">✅</div>
+                    <h1 style="color: #4CAF50; margin-bottom: 20px;">Order Placed Successfully!</h1>
+                    <p style="font-size: 1.2rem; color: #666; margin-bottom: 30px;">
+                        Thank you ${fullName}! Your order has been confirmed.
+                    </p>
+                    
+                    <div style="background: #f8fff8; border: 2px solid #4CAF50; border-radius: 15px; padding: 30px; margin: 30px 0; text-align: left;">
+                        <h3 style="color: #4CAF50; text-align: center; margin-bottom: 20px;">📋 Order Details</h3>
+                        <p style="margin-bottom: 10px;"><strong>Order Number:</strong> #${orderNumber}</p>
+                        <p style="margin-bottom: 10px;"><strong>Total Amount:</strong> ₹${total}</p>
+                        <p style="margin-bottom: 10px;"><strong>Payment Method:</strong> ${payment}</p>
+                        <p style="margin-bottom: 10px;"><strong>Customer:</strong> ${fullName}</p>
+                        <p style="margin-bottom: 10px;"><strong>Phone:</strong> ${phone}</p>
+                        <p style="margin-bottom: 10px;"><strong>Delivery Address:</strong> ${address}</p>
+                        <p style="margin-bottom: 0;"><strong>Status:</strong> <span style="color: #4CAF50; font-weight: bold;">Confirmed ✅</span></p>
+                    </div>
+                    
+                    <div style="background: #e8f5e9; padding: 25px; border-radius: 10px; margin: 25px 0; text-align: left;">
+                        <h3 style="color: #4CAF50; margin-bottom: 15px;">🚚 What's Next?</h3>
+                        <p style="margin-bottom: 8px;">• Your order is being prepared by our farmers</p>
+                        <p style="margin-bottom: 8px;">• You'll receive SMS updates on delivery status</p>
+                        <p style="margin-bottom: 8px;">• Expected delivery: Within 24 hours</p>
+                        <p style="margin-bottom: 0;">• Our delivery partner will call before arrival</p>
+                    </div>
+                    
+                    <button onclick="location.reload()" style="background: #4CAF50; color: white; border: none; padding: 15px 30px; border-radius: 25px; font-size: 18px; font-weight: bold; cursor: pointer; margin: 10px;">
+                        🛒 Continue Shopping
+                    </button>
+                </div>
+            `;
+            
+            window.scrollTo(0, 0);
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed; top: 100px; right: 20px; background: #4CAF50; color: white;
+                padding: 15px 25px; border-radius: 25px; z-index: 3000; 
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3); font-weight: bold;
+                transform: translateX(400px); transition: transform 0.3s ease;
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.style.transform = 'translateX(0)', 100);
+            setTimeout(() => {
+                toast.style.transform = 'translateX(400px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Initialize cart when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM loaded, initializing cart...');
+            
+            // Show immediate confirmation that JavaScript is working
+            setTimeout(function() {
+                console.log('Cart initialization starting...');
+                initializeCart();
+                
+                // Add visual confirmation
+                const testDiv = document.createElement('div');
+                testDiv.style.cssText = 'position: fixed; top: 10px; right: 10px; background: #4CAF50; color: white; padding: 10px; border-radius: 5px; z-index: 9999;';
+                testDiv.textContent = '✅ Cart System Active';
+                document.body.appendChild(testDiv);
+                
+                setTimeout(() => testDiv.remove(), 3000);
+                
+                // Load products by default
+                loadContent('products');
+            }, 100);
+        });
+
+        // Also initialize on window load as backup
+        window.addEventListener('load', function() {
+            console.log('Window loaded, ensuring cart is initialized...');
+            setTimeout(function() {
+                initializeCart();
+                console.log('Backup initialization complete');
+            }, 200);
+        });
+
+        // Override the problematic loadContent function with a simple version
+        function loadContent(section) {
+            console.log('Loading content:', section);
+            
+            if (section === 'products') {
+                document.getElementById('mainContent').innerHTML = `
+                    <div style="padding: 40px 20px;">
+                        <h1 style="text-align: center; color: #4CAF50; margin-bottom: 40px;">🌱 Fresh Organic Products</h1>
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px;">
+                            
+                            <div style="background: white; border-radius: 15px; padding: 25px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                                <img src="tomatoes.jpg" alt="Organic Tomatoes" style="width: 200px; height: 200px; object-fit: cover; border-radius: 15px; margin-bottom: 20px;"
+                                     onerror="this.style.background='#f5f5f5'; this.style.display='flex'; this.style.alignItems='center'; this.style.justifyContent='center'; this.innerHTML='🍅';">
+                                <h3 style="color: #2c5530; margin-bottom: 10px;">Fresh Organic Tomatoes</h3>
+                                <div style="color: #4CAF50; font-size: 1.5rem; font-weight: bold; margin-bottom: 15px;">₹40/kg</div>
+                                <p style="color: #666; margin-bottom: 20px;">Juicy, fresh tomatoes directly from organic farms</p>
+                                <button onclick="addToCart(1, 'Fresh Organic Tomatoes', 40, 'tomatoes.jpg')" 
+                                        style="background: #4CAF50; color: white; border: none; padding: 12px 30px; border-radius: 25px; cursor: pointer; font-size: 16px; font-weight: bold;">
+                                    🛒 Add to Cart
+                                </button>
+                            </div>
+                            
+                            <div style="background: white; border-radius: 15px; padding: 25px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                                <img src="carrots.jpg" alt="Fresh Carrots" style="width: 200px; height: 200px; object-fit: cover; border-radius: 15px; margin-bottom: 20px;"
+                                     onerror="this.style.background='#f5f5f5'; this.style.display='flex'; this.style.alignItems='center'; this.style.justifyContent='center'; this.innerHTML='🥕';">
+                                <h3 style="color: #2c5530; margin-bottom: 10px;">Fresh Carrots</h3>
+                                <div style="color: #4CAF50; font-size: 1.5rem; font-weight: bold; margin-bottom: 15px;">₹35/kg</div>
+                                <p style="color: #666; margin-bottom: 20px;">Crunchy, sweet carrots packed with nutrients</p>
+                                <button onclick="addToCart(2, 'Fresh Carrots', 35, 'carrots.jpg')" 
+                                        style="background: #4CAF50; color: white; border: none; padding: 12px 30px; border-radius: 25px; cursor: pointer; font-size: 16px; font-weight: bold;">
+                                    🛒 Add to Cart
+                                </button>
+                            </div>
+                            
+                            <div style="background: white; border-radius: 15px; padding: 25px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                                <img src="potatoes.jpg" alt="Organic Potatoes" style="width: 200px; height: 200px; object-fit: cover; border-radius: 15px; margin-bottom: 20px;"
+                                     onerror="this.style.background='#f5f5f5'; this.style.display='flex'; this.style.alignItems='center'; this.style.justifyContent='center'; this.innerHTML='🥔';">
+                                <h3 style="color: #2c5530; margin-bottom: 10px;">Organic Potatoes</h3>
+                                <div style="color: #4CAF50; font-size: 1.5rem; font-weight: bold; margin-bottom: 15px;">₹25/kg</div>
+                                <p style="color: #666; margin-bottom: 20px;">Farm-fresh potatoes perfect for all dishes</p>
+                                <button onclick="addToCart(3, 'Organic Potatoes', 25, 'potatoes.jpg')" 
+                                        style="background: #4CAF50; color: white; border: none; padding: 12px 30px; border-radius: 25px; cursor: pointer; font-size: 16px; font-weight: bold;">
+                                    🛒 Add to Cart
+                                </button>
+                            </div>
+                            
+                            <div style="background: white; border-radius: 15px; padding: 25px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                                <img src="onions.jpg" alt="Fresh Onions" style="width: 200px; height: 200px; object-fit: cover; border-radius: 15px; margin-bottom: 20px;"
+                                     onerror="this.style.background='#f5f5f5'; this.style.display='flex'; this.style.alignItems='center'; this.style.justifyContent='center'; this.innerHTML='🧅';">
+                                <h3 style="color: #2c5530; margin-bottom: 10px;">Fresh Onions</h3>
+                                <div style="color: #4CAF50; font-size: 1.5rem; font-weight: bold; margin-bottom: 15px;">₹30/kg</div>
+                                <p style="color: #666; margin-bottom: 20px;">Quality onions essential for every kitchen</p>
+                                <button onclick="addToCart(4, 'Fresh Onions', 30, 'onions.jpg')" 
+                                        style="background: #4CAF50; color: white; border: none; padding: 12px 30px; border-radius: 25px; cursor: pointer; font-size: 16px; font-weight: bold;">
+                                    🛒 Add to Cart
+                                </button>
+                            </div>
+                            
+                            <div style="background: white; border-radius: 15px; padding: 25px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                                <img src="cabbage.jpg" alt="Organic Cabbage" style="width: 200px; height: 200px; object-fit: cover; border-radius: 15px; margin-bottom: 20px;"
+                                     onerror="this.style.background='#f5f5f5'; this.style.display='flex'; this.style.alignItems='center'; this.style.justifyContent='center'; this.innerHTML='🥬';">
+                                <h3 style="color: #2c5530; margin-bottom: 10px;">Organic Cabbage</h3>
+                                <div style="color: #4CAF50; font-size: 1.5rem; font-weight: bold; margin-bottom: 15px;">₹20/kg</div>
+                                <p style="color: #666; margin-bottom: 20px;">Fresh, crispy cabbage loaded with vitamins</p>
+                                <button onclick="addToCart(5, 'Organic Cabbage', 20, 'cabbage.jpg')" 
+                                        style="background: #4CAF50; color: white; border: none; padding: 12px 30px; border-radius: 25px; cursor: pointer; font-size: 16px; font-weight: bold;">
+                                    🛒 Add to Cart
+                                </button>
+                            </div>
+                            
+                            <div style="background: white; border-radius: 15px; padding: 25px; text-align: center; box-shadow: 0 5px 20px rgba(0,0,0,0.1);">
+                                <img src="seeds.jpg" alt="Garden Seeds" style="width: 200px; height: 200px; object-fit: cover; border-radius: 15px; margin-bottom: 20px;"
+                                     onerror="this.style.background='#f5f5f5'; this.style.display='flex'; this.style.alignItems='center'; this.style.justifyContent='center'; this.innerHTML='🌱';">
+                                <h3 style="color: #2c5530; margin-bottom: 10px;">Garden Seeds Mix</h3>
+                                <div style="color: #4CAF50; font-size: 1.5rem; font-weight: bold; margin-bottom: 15px;">₹15/pack</div>
+                                <p style="color: #666; margin-bottom: 20px;">Premium seeds for your home garden</p>
+                                <button onclick="addToCart(6, 'Garden Seeds Mix', 15, 'seeds.jpg')" 
+                                        style="background: #4CAF50; color: white; border: none; padding: 12px 30px; border-radius: 25px; cursor: pointer; font-size: 16px; font-weight: bold;">
+                                    🛒 Add to Cart
+                                </button>
+                            </div>
+                            
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => {
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
+        }
+
+        console.log('Cart system override loaded');
+    </script>
+</body>
+</html>

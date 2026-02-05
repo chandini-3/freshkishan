@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gardening Store - Learn & Shop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('plant1.jpg'); /* Replace with actual image */
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            font-size: 36px;
+        }
+        p {
+            font-size: 18px;
+            max-width: 800px;
+            margin: 20px auto;
+            background: rgba(0, 0, 0, 0.6);
+            padding: 10px;
+            border-radius: 8px;
+        }
+        .learn-more {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 20px 0;
+        }
+        .learn-more:hover {
+            background-color: #45a049;
+        }
+        .info-section {
+            display: none;
+            margin-top: 20px;
+        }
+        .products {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .product {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 8px;
+            width: 250px;
+            text-align: center;
+        }
+        .product img {
+            width: 100%;
+            height: 150px;
+            border-radius: 8px;
+        }
+        .product h3 {
+            font-size: 20px;
+        }
+        .product p {
+            font-size: 16px;
+        }
+        .price {
+            font-size: 18px;
+            font-weight: bold;
+            color: yellow;
+        }
+        .buy-btn {
+            background-color: #ff9800;
+            color: white;
+            padding: 10px 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .buy-btn:hover {
+            background-color: #e68a00;
+        }
+    </style>
+    <script>
+        function showDetails() {
+            document.getElementById("info-section").style.display = "block";
+        }
+    </script>
+</head>
+<body>
+
+    <h1>🌱 Gardening: Learn & Shop 🛍️</h1>
+    <p>Discover expert gardening advice, high-quality products, and community support.</p>
+    
+    <!-- Learn More Button -->
+    <button class="learn-more" onclick="showDetails()">Learn More</button>
+
+    <!-- Information Section (Hidden Initially) -->
+    <div id="info-section" class="info-section">
+        <h2>🌿 What We Offer</h2>
+        <ul>
+            <li><strong>📖 Expert Advice:</strong> Guides for every plant and season.</li>
+            <li><strong>🌻 Quality Products:</strong> Seeds, soil, fertilizers, and tools.</li>
+            <li><strong>🌎 Eco-Friendly Solutions:</strong> Sustainable gardening practices.</li>
+            <li><strong>🏡 DIY Gardening Ideas:</strong> Landscaping and indoor gardening tips.</li>
+            <li><strong>🌼 Community Support:</strong> Connect with gardeners worldwide.</li>
+        </ul>
+    </div>
+
+    <h2>🛒 Shop Gardening Essentials</h2>
+    <div class="products">
+        <!-- Product 1: Seeds -->
+        <div class="product">
+            <img src="seeds.jpg" alt="Seeds">
+            <h3>Organic Seeds</h3>
+            <p>High-quality vegetable and flower seeds.</p>
+            <p class="price">₹150</p>
+            <button class="buy-btn">Buy Now</button>
+        </div>
+
+        <!-- Product 2: Fertilizers -->
+        <div class="product">
+            <img src="fertilizer.jpg" alt="Fertilizers">
+            <h3>Organic Fertilizer</h3>
+            <p>Nutrient-rich fertilizer for healthy plants.</p>
+            <p class="price">₹250</p>
+            <button class="buy-btn">Buy Now</button>
+        </div>
+
+        <!-- Product 3: Pots -->
+        <div class="product">
+            <img src="pots.jpg" alt="Pots">
+            <h3>Gardening Pots</h3>
+            <p>Durable and stylish pots for plants.</p>
+            <p class="price">₹300</p>
+            <button class="buy-btn">Buy Now</button>
+        </div>
+
+        <!-- Product 4: Soil -->
+        <div class="product">
+            <img src="soil.jpg" alt="Soil">
+            <h3>Premium Garden Soil</h3>
+            <p>Rich organic soil for best plant growth.</p>
+            <p class="price">₹200</p>
+            <button class="buy-btn">Buy Now</button>
+        </div>
+
+        <!-- Product 5: Gardening Tools -->
+        <div class="product">
+            <img src="tools.jpg" alt="Tools">
+            <h3>Gardening Tool Set</h3>
+            <p>Essential tools for easy gardening.</p>
+            <p class="price">₹500</p>
+            <button class="buy-btn">Buy Now</button>
+        </div>
+    </div>
+
+</body>
+</html>

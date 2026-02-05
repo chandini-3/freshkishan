@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garden Portal</title>
+    <link rel="stylesheet" href="gar.css">
+    <style>
+        body {
+            background-image: url('lbg.jpg'); 
+            background-size: cover; 
+            background-position: center; 
+            background-repeat: no-repeat; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+        }
+        .form-with-background {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            color: white;
+            font-family: Arial, sans-serif;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        label { color: #4c93af; font-weight: bold; }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 2px solid #4c93af;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+        input:focus { border-color: #2d9c6a; box-shadow: 0 0 5px rgba(45, 156, 106, 0.5); }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4c93af;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button:hover { background-color: #2d9c6a; }
+        .input-group { margin-bottom: 15px; }
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-align: center;
+            display: none;
+        }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+
+    <!-- Sign-Up Form (Shown First) -->
+    <div id="signup-container" class="form-with-background">
+        <h1>🌱 Garden Register</h1>
+        <form id="signup-form">
+            <div class="input-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="Enter your full name" required>
+            </div>
+            <div class="input-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Enter your email" required>
+            </div>
+            <div class="input-group">
+                <label for="signup-username">Username</label>
+                <input type="text" id="signup-username" placeholder="Enter your username" required>
+            </div>
+            <div class="input-group">
+                <label for="signup-password">Password</label>
+                <input type="password" id="signup-password" placeholder="Enter your password" required>
+            </div>
+            <div class="input-group">
+                <label for="phonenumber">Phone Number</label>
+                <input type="tel" id="phonenumber" placeholder="Enter your phone number" required>
+            </div>
+            <button type="submit">Sign Up</button>
+            <p id="message"></p>
+        </form>
+        <p>Already have an account? <a href="#" onclick="toggleForm()">Sign in</a></p>
+    </div>
+
+    <!-- Login Form (Initially Hidden) -->
+    <div id="login-container" class="form-with-background hidden">
+        <h1>🌱 Garden Login</h1>
+        <div id="error-message" class="error-message"></div>
+        <form id="loginForm">
+            <div class="input-group">
+                <label for="login-username">Username</label>
+                <input type="text" id="login-username" name="username" placeholder="Enter your username" required>
+            </div>
+            <div class="input-group">
+                <label for="login-password">Password</label>
+                <input type="password" id="login-password" name="password" placeholder="Enter your password" required>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href="#" onclick="toggleForm()">Sign up</a></p>
+    </div>
+
+    <script>
+        const users = []; // Simulated database
+
+        // Toggle between login and signup forms
+        function toggleForm() {
+            document.getElementById("login-container").classList.toggle("hidden");
+            document.getElementById("signup-container").classList.toggle("hidden");
+        }
+
+        // Sign-Up Form Handling
+        document.getElementById("signup-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const name = document.getElementById("name").value;
+            const email = document.getElementById("email").value;
+            const username = document.getElementById("signup-username").value;
+            const password = document.getElementById("signup-password").value;
+            const phone = document.getElementById("phonenumber").value;
+
+            // Store user data (simulate saving to a database)
+            users.push({ username, password });
+
+            alert("Registration successful! Redirecting to login...");
+            toggleForm();
+        });
+
+        // Login Form Handling
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            const loginUsername = document.getElementById("login-username").value;
+            const loginPassword = document.getElementById("login-password").value;
+
+            // Check if user exists
+            const user = users.find(user => user.username === loginUsername && user.password === loginPassword);
+
+            if (user) {
+                alert("Login successful! Welcome to your garden.");
+                // Redirect to dashboard (replace with actual dashboard page)
+                window.location.href = "pagec.html";
+            } else {
+                document.getElementById("error-message").textContent = "Invalid username or password!";
+                document.getElementById("error-message").style.display = "block";
+            }
+        });
+    </script>
+
+</body>
+</html>

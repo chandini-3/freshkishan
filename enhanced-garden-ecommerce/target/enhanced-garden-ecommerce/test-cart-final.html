@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Final Cart Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 20px; border: 1px solid #ccc; }
+        button { padding: 10px 20px; margin: 10px 0; background: #4CAF50; color: white; border: none; cursor: pointer; }
+        button:hover { background: #45a049; }
+        .status { margin: 10px 0; padding: 10px; background: #f0f0f0; }
+        .error { background: #ffebee; color: #c62828; }
+        .success { background: #e8f5e8; color: #2e7d32; }
+    </style>
+</head>
+<body>
+    <h1>🛒 Final Cart Test</h1>
+    <div id="status" class="status">Ready to test...</div>
+    
+    <div class="test-section">
+        <h3>Step 1: Load JavaScript</h3>
+        <button onclick="loadScript()">Load Cart Script</button>
+        <div id="script-status"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Step 2: Quick Login</h3>
+        <button onclick="quickLogin()">Login as testuser</button>
+        <div id="login-status"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Step 3: Test Cart</h3>
+        <button onclick="testCart()">Add Item & Show Cart</button>
+        <div id="cart-status"></div>
+    </div>
+    
+    <div class="test-section">
+        <h3>Emergency Fix</h3>
+        <button onclick="emergencyFix()">🚨 Emergency Cart Fix</button>
+        <div id="emergency-status"></div>
+    </div>
+
+    <script>
+        function updateStatus(msg, type = 'info') {
+            const status = document.getElementById('status');
+            status.textContent = msg;
+            status.className = 'status ' + type;
+            console.log(msg);
+        }
+
+        function loadScript() {
+            const script = document.createElement('script');
+            script.src = 'js/simple-app.js';
+            script.onload = () => {
+                document.getElementById('script-status').innerHTML = '<span style="color:green">✅ Script loaded successfully</span>';
+                updateStatus('Script loaded - checking functions...', 'success');
+                
+                // Check if key functions exist
+                if (typeof showCart === 'function') {
+                    updateStatus('✅ Cart functions are available!', 'success');
+                } else {
+                    updateStatus('❌ Cart functions not found', 'error');
+                }
+            };
+            script.onerror = () => {
+                document.getElementById('script-status').innerHTML = '<span style="color:red">❌ Failed to load script</span>';
+                updateStatus('Failed to load script', 'error');
+            };
+            document.head.appendChild(script);
+        }
+
+        function quickLogin() {
+            updateStatus('Attempting login...', 'info');
+            
+            fetch('/gar/LoginServlet', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'username=testuser&password=test123'
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    document.getElementById('login-status').innerHTML = '<span style="color:green">✅ Login successful</span>';
+                    updateStatus(`✅ Logged in as ${data.full_name}`, 'success');
+                    
+                    // Store user data globally
+                    window.currentUser = {
+                        id: data.user_id,
+                        username: data.username,
+                        fullName: data.full_name,
+                        email: data.email,
+                        userType: data.user_type || 'customer'
+                    };
+                } else {
+                    throw new Error(data.message || 'Login failed');
+                }
+            })
+            .catch(error => {
+                document.getElementById('login-status').innerHTML = '<span style="color:red">❌ Login failed</span>';
+                updateStatus(`❌ Login error: ${error.message}`, 'error');
+            });
+        }
+
+        function testCart() {
+            if (!window.currentUser) {
+                updateStatus('❌ Please login first', 'error');
+                return;
+            }
+
+            updateStatus('Testing cart functionality...', 'info');
+            
+            // Test adding an item
+            const testProduct = {
+                id: 1,
+                name: 'Fresh Tomatoes',
+                price: 4.99,
+                image: 'tomatoes.jpg'
+            };
+
+            // Check if addToCartDB function exists
+            if (typeof addToCartDB === 'function') {
+                addToCartDB(testProduct.id, testProduct.name, testProduct.price, testProduct.image)
+                .then(() => {
+                    document.getElementById('cart-status').innerHTML = '<span style="color:green">✅ Item added to cart</span>';
+                    updateStatus('✅ Item added, now showing cart...', 'success');
+                    
+                    // Show cart
+                    setTimeout(() => {
+                        if (typeof showCart === 'function') {
+                            showCart();
+                            updateStatus('✅ Cart displayed!', 'success');
+                        } else {
+                            updateStatus('❌ showCart function not found', 'error');
+                        }
+                    }, 1000);
+                })
+                .catch(error => {
+                    document.getElementById('cart-status').innerHTML = '<span style="color:red">❌ Failed to add item</span>';
+                    updateStatus(`❌ Cart error: ${error.message}`, 'error');
+                });
+            } else {
+                updateStatus('❌ addToCartDB function not found', 'error');
+            }
+        }
+
+        function emergencyFix() {
+            updateStatus('🚨 Running emergency cart fix...', 'info');
+            
+            // Try to call the emergency fix function if it exists
+            if (typeof fixCartNow === 'function') {
+                try {
+                    fixCartNow();
+                    document.getElementById('emergency-status').innerHTML = '<span style="color:green">✅ Emergency fix executed</span>';
+                    updateStatus('✅ Emergency fix completed', 'success');
+                } catch (error) {
+                    document.getElementById('emergency-status').innerHTML = '<span style="color:red">❌ Emergency fix failed</span>';
+                    updateStatus(`❌ Emergency fix error: ${error.message}`, 'error');
+                }
+            } else {
+                updateStatus('❌ Emergency fix function not available', 'error');
+            }
+        }
+
+        // Auto-load script on page load
+        window.onload = () => {
+            loadScript();
+        };
+    </script>
+</body>
+</html>

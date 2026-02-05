@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community Gardening</title>
+    <style>
+        /* General Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        /* Fullscreen Hero Section */
+        .hero {
+            background: url('bg.jpg') no-repeat center center/cover;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+        }
+
+        .hero h1 {
+            font-size: 50px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            background: #4CAF50;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            border-radius: 25px;
+            text-decoration: none;
+            transition: 0.3s ease-in-out;
+        }
+
+        .btn:hover {
+            background: #388e3c;
+            transform: scale(1.1);
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background: rgba(0, 100, 0, 0.8);
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            text-align: center;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            padding: 12px 20px;
+            display: inline-block;
+            transition: 0.3s ease-in-out;
+        }
+
+        .navbar a:hover {
+            background: #4CAF50;
+            border-radius: 5px;
+        }
+
+        /* Content Sections */
+        .section {
+            padding: 50px;
+            text-align: center;
+        }
+
+        .section h2 {
+            font-size: 36px;
+            color: #2e7d32;
+            margin-bottom: 20px;
+        }
+
+        .section p {
+            font-size: 18px;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .about, .benefits {
+            background: #e0f7fa;
+        }
+
+        .join {
+            background: #c8e6c9;
+        }
+
+        .footer {
+            background: #2e7d32;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- Navbar -->
+    <div class="navbar">
+        <a href="#about">About</a>
+        <a href="#benefits">Benefits</a>
+        <a href="#join">Join Us</a>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>🌼 Gardening Community</h1>
+        <p>Connect, learn, and grow together in our gardening paradise!</p>
+        <a href="#join" class="btn">Join Now</a>
+    </div>
+
+    <!-- About Section -->
+    <div id="about" class="section about">
+        <h2>🌿 About Our Community</h2>
+        <p>We are a passionate group of garden lovers who come together to share ideas, exchange tips, and grow plants together. Whether you're a beginner or a seasoned gardener, this is the perfect place for you!</p>
+    </div>
+
+    <!-- Benefits Section -->
+    <div id="benefits" class="section benefits">
+        <h2>🌻 Benefits of Joining</h2>
+        <p>Here’s what you get when you join:</p>
+        <ul style="list-style: none; padding: 0; font-size: 18px;">
+            <li>✅ Exclusive gardening tips</li>
+            <li>✅ Monthly challenges & rewards</li>
+            <li>✅ Meet experienced gardeners</li>
+            <li>✅ Learn about organic farming</li>
+        </ul>
+    </div>
+
+    <!-- Join Section -->
+    <div id="join" class="section join">
+        <h2>🌱 Ready to Start?</h2>
+        <p>Join our growing community and be part of an amazing journey!</p>
+        <a href="get-started.html" class="btn">Get Started</a>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        <p>© 2025 Gardening Express | Made with ❤️ for nature lovers.</p>
+    </div>
+
+</body>
+</html>

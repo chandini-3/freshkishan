@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart Test - Garden E-Commerce</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .header {
+            background: linear-gradient(135deg, #2c5530, #4a7c59);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            padding: 20px;
+            text-align: center;
+        }
+        .product-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .price {
+            font-size: 24px;
+            font-weight: bold;
+            color: #2c5530;
+            margin: 10px 0;
+        }
+        .btn {
+            background: #4a7c59;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+        .btn:hover {
+            background: #2c5530;
+            transform: translateY(-2px);
+        }
+        .cart-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+        }
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            border: none;
+            background: #4a7c59;
+            color: white;
+            border-radius: 50%;
+            cursor: pointer;
+        }
+        .total-section {
+            text-align: right;
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c5530;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 2px solid #4a7c59;
+        }
+        .checkout-form {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🌱 Garden E-Commerce - Cart Test</h1>
+        <p>Test the new database-integrated cart system</p>
+    </div>
+
+    <div class="products-grid">
+        <div class="product-card">
+            <img src="tomatoes.jpg" alt="Organic Tomatoes">
+            <h3>Organic Tomatoes</h3>
+            <div class="price">₹40/kg</div>
+            <button class="btn" onclick="addToCart(1, 'Organic Tomatoes', 40)">Add to Cart</button>
+        </div>
+        
+        <div class="product-card">
+            <img src="potatoes.jpg" alt="Organic Potatoes">
+            <h3>Organic Potatoes</h3>
+            <div class="price">₹25/kg</div>
+            <button class="btn" onclick="addToCart(2, 'Organic Potatoes', 25)">Add to Cart</button>
+        </div>
+        
+        <div class="product-card">
+            <img src="carrots.jpg" alt="Fresh Carrots">
+            <h3>Fresh Carrots</h3>
+            <div class="price">₹35/kg</div>
+            <button class="btn" onclick="addToCart(3, 'Fresh Carrots', 35)">Add to Cart</button>
+        </div>
+    </div>
+
+    <div class="cart-section">
+        <h2>🛒 Your Cart</h2>
+        <div id="cartItems">
+            <p>Loading cart...</p>
+        </div>
+        <div class="total-section" id="cartTotal">
+            Total: ₹0
+        </div>
+        <button class="btn" onclick="loadCart()">Refresh Cart</button>
+        <button class="btn" onclick="clearCart()">Clear Cart</button>
+    </div>
+
+    <div class="checkout-form" id="checkoutForm" style="display: none;">
+        <h2>🚚 Checkout</h2>
+        <div class="form-group">
+            <label for="shippingAddress">Shipping Address:</label>
+            <textarea id="shippingAddress" rows="3" placeholder="Enter your full address"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="paymentMethod">Payment Method:</label>
+            <select id="paymentMethod">
+                <option value="Cash on Delivery">Cash on Delivery</option>
+                <option value="Online Payment">Online Payment</option>
+                <option value="Card">Credit/Debit Card</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="deliveryTime">Preferred Delivery Time:</label>
+            <select id="deliveryTime">
+                <option value="Morning (9 AM - 12 PM)">Morning (9 AM - 12 PM)</option>
+                <option value="Afternoon (12 PM - 4 PM)">Afternoon (12 PM - 4 PM)</option>
+                <option value="Evening (4 PM - 8 PM)">Evening (4 PM - 8 PM)</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="specialInstructions">Special Instructions:</label>
+            <textarea id="specialInstructions" rows="2" placeholder="Any special delivery instructions"></textarea>
+        </div>
+        <button class="btn" onclick="placeOrder()">Place Order</button>
+        <button class="btn" onclick="hideCheckout()">Cancel</button>
+    </div>
+
+    <script>
+        // Test if user is logged in
+        let userId = sessionStorage.getItem('user_id') || 1; // Default to user 1 for testing
+        
+        function addToCart(productId, productName, price) {
+            fetch('/CartServlet', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `action=add&product_id=${productId}&quantity=1`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(`${productName} added to cart!`);
+                    loadCart();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to add to cart');
+            });
+        }
+        
+        function loadCart() {
+            fetch('/CartServlet')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    displayCart(data.cart_items, data.total_amount);
+                } else {
+                    document.getElementById('cartItems').innerHTML = '<p>Error loading cart: ' + data.message + '</p>';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('cartItems').innerHTML = '<p>Failed to load cart</p>';
+            });
+        }
+        
+        function displayCart(items, total) {
+            const cartDiv = document.getElementById('cartItems');
+            const totalDiv = document.getElementById('cartTotal');
+            
+            if (items.length === 0) {
+                cartDiv.innerHTML = '<p>Your cart is empty</p>';
+                totalDiv.innerHTML = 'Total: ₹0';
+                return;
+            }
+            
+            let html = '';
+            items.forEach(item => {
+                html += `
+                    <div class="cart-item">
+                        <div>
+                            <strong>${item.name}</strong><br>
+                            ₹${item.price}/kg
+                        </div>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" onclick="updateQuantity(${item.product_id}, ${item.quantity - 1})">-</button>
+                            <span>Qty: ${item.quantity}</span>
+                            <button class="quantity-btn" onclick="updateQuantity(${item.product_id}, ${item.quantity + 1})">+</button>
+                        </div>
+                        <div>
+                            <strong>₹${item.total}</strong><br>
+                            <button class="btn" style="font-size: 12px; padding: 5px 10px;" onclick="removeFromCart(${item.product_id})">Remove</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `<button class="btn" onclick="showCheckout()" style="margin-top: 20px;">Proceed to Checkout</button>`;
+            
+            cartDiv.innerHTML = html;
+            totalDiv.innerHTML = `Total: ₹${total}`;
+        }
+        
+        function updateQuantity(productId, newQuantity) {
+            if (newQuantity <= 0) {
+                removeFromCart(productId);
+                return;
+            }
+            
+            fetch('/CartServlet', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `action=update&product_id=${productId}&quantity=${newQuantity}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    loadCart();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to update cart');
+            });
+        }
+        
+        function removeFromCart(productId) {
+            fetch('/CartServlet', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `action=remove&product_id=${productId}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    loadCart();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to remove from cart');
+            });
+        }
+        
+        function clearCart() {
+            if (confirm('Are you sure you want to clear the cart?')) {
+                fetch('/CartServlet', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'action=clear'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        loadCart();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to clear cart');
+                });
+            }
+        }
+        
+        function showCheckout() {
+            document.getElementById('checkoutForm').style.display = 'block';
+        }
+        
+        function hideCheckout() {
+            document.getElementById('checkoutForm').style.display = 'none';
+        }
+        
+        function placeOrder() {
+            const shippingAddress = document.getElementById('shippingAddress').value;
+            const paymentMethod = document.getElementById('paymentMethod').value;
+            const deliveryTime = document.getElementById('deliveryTime').value;
+            const specialInstructions = document.getElementById('specialInstructions').value;
+            
+            if (!shippingAddress) {
+                alert('Please enter shipping address');
+                return;
+            }
+            
+            fetch('/OrderServlet', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: `action=create_order&shipping_address=${encodeURIComponent(shippingAddress)}&payment_method=${encodeURIComponent(paymentMethod)}&delivery_time=${encodeURIComponent(deliveryTime)}&special_instructions=${encodeURIComponent(specialInstructions)}`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(`Order placed successfully!\nOrder Number: ${data.order_number}\nTotal: ₹${data.total_amount}\nExpected Delivery: ${data.expected_delivery}`);
+                    loadCart();
+                    hideCheckout();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to place order');
+            });
+        }
+        
+        // Load cart on page load
+        window.onload = function() {
+            loadCart();
+        }
+    </script>
+</body>
+</html>

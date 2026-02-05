@@ -1,0 +1,422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garden Shop - Buy Gardening Products</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            text-align: center;
+            padding: 20px;
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+        }
+        .product {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 250px;
+            text-align: center;
+        }
+        .product img {
+            width: 100%;
+            border-radius: 8px;
+        }
+        .price {
+            font-size: 18px;
+            color: #ff9800;
+            font-weight: bold;
+        }
+        .cart {
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .cart button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .cart button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🌿 Welcome to Our Gardening Shop</h1>
+    <p>Browse our high-quality gardening products and start your green journey today!</p>
+
+    <div class="product-container">
+        <div class="product">
+            <img src="seeds.jpg" alt="Seeds">
+            <h3>Organic Seeds</h3>
+            <p class="price">$5.99</p>
+            <button onclick="addToCart('Organic Seeds', 5.99)">🛒 Add to Cart</button>
+        </div>
+
+        <div class="product">
+            <img src="fertilizer.jpg" alt="Fertilizer">
+            <h3>Natural Fertilizer</h3>
+            <p class="price">$12.99</p>
+            <button onclick="addToCart('Natural Fertilizer', 12.99)">🛒 Add to Cart</button>
+        </div>
+
+        <div class="product">
+            <img src="pots.jpg" alt="Pots">
+            <h3>Clay Plant Pots</h3>
+            <p class="price">$8.49</p>
+            <button onclick="addToCart('Clay Plant Pots', 8.49)">🛒 Add to Cart</button>
+        </div>
+
+        <div class="product">
+            <img src="soil.jpg" alt="Soil">
+            <h3>Organic Potting Soil</h3>
+            <p class="price">$10.99</p>
+            <button onclick="addToCart('Organic Potting Soil', 10.99)">🛒 Add to Cart</button>
+        </div>
+
+        <div class="product">
+            <img src="tools.jpg" alt="Gardening Tools">
+            <h3>Garden Tool Kit</h3>
+            <p class="price">$24.99</p>
+            <button onclick="addToCart('Garden Tool Kit', 24.99)">🛒 Add to Cart</button>
+        </div>
+    </div>
+
+    <div class="cart">
+        <h2>🛍️ Your Shopping Cart</h2>
+        <ul id="cart-items"></ul>
+        <p><strong>Total:</strong> $<span id="total-price">0.00</span></p>
+        <button onclick="checkout()">Proceed to Checkout</button>
+    </div>
+
+    <script>
+        function addToCart(productName, price) {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let totalPrice = parseFloat(localStorage.getItem("totalPrice")) || 0;
+
+            cart.push({ name: productName, price: price });
+            totalPrice += price;
+
+            localStorage.setItem("cart", JSON.stringify(cart));
+            localStorage.setItem("totalPrice", totalPrice.toFixed(2));
+
+            updateCart();
+        }
+
+        function updateCart() {
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            let totalPrice = parseFloat(localStorage.getItem("totalPrice")) || 0;
+
+            const cartItems = document.getElementById("cart-items");
+            const totalElement = document.getElementById("total-price");
+
+            cartItems.innerHTML = "";
+            cart.forEach((item) => {
+                let li = document.createElement("li");
+                li.textContent = `${item.name} - $${item.price.toFixed(2)}`;
+                cartItems.appendChild(li);
+            });
+
+            totalElement.textContent = totalPrice.toFixed(2);
+        }
+
+        function checkout() {
+            let customerName = prompt("Enter your name:");
+            if (!customerName) {
+                alert("Name is required.");
+                return;
+            }
+
+            let cart = JSON.parse(localStorage.getItem("cart")) || [];
+            if (cart.length === 0) {
+                alert("Your cart is empty. Please add items before checkout.");
+                return;
+            }
+
+            fetch("OrderServlet", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ customerName, cart })
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert(data);
+                localStorage.removeItem("cart");
+                localStorage.removeItem("totalPrice");
+                updateCart();
+            })
+            .catch(error => console.error("Error:", error));
+        }
+
+        document.addEventListener("DOMContentLoaded", updateCart);
+    </script>
+
+</body>
+</html>
+second html code 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garden Shop - Buy Gardening Products</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* Top Navigation Bar */
+        .top-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffffff;
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .top-nav .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #4CAF50;
+        }
+
+        .top-nav .search-bar {
+            flex-grow: 1;
+            margin: 0 20px;
+        }
+
+        .search-bar input {
+            width: 80%;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        .search-bar button {
+            padding: 8px 15px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cart-btn {
+            background-color: #8a1a4a;
+            color: white;
+            padding: 8px 15px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        /* Category Menu */
+        .category-menu {
+            display: flex;
+            justify-content: center;
+            background-color: #8DC63F;
+            padding: 10px 0;
+        }
+
+        .category-menu a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-weight: bold;
+        }
+
+        .category-menu a:hover {
+            background-color: #76A82B;
+            border-radius: 5px;
+        }
+
+        /* Product Section */
+        .product-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            padding: 20px;
+        }
+
+        .product {
+            background: white;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 200px;
+            text-align: center;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .product:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .product img {
+            width: 100%;
+            border-radius: 8px;
+        }
+
+        .store {
+            font-size: 13px;
+            color: #555;
+            margin-top: 5px;
+        }
+
+        .rating {
+            color: #FFD700;
+            font-size: 14px;
+        }
+
+        .price {
+            font-size: 16px;
+            color: #ff9800;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+
+        .product button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 8px 10px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .product button:hover {
+            background-color: #45a049;
+        }
+
+        .cart {
+            margin-top: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+        }
+
+        .cart button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .cart button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navigation Bar -->
+    <div class="top-nav">
+        <div class="logo">🌿 Gardening Express</div>
+        <div class="search-bar">
+            <input type="text" placeholder="Search entire store here...">
+            <button>🔍</button>
+        </div>
+        <button class="cart-btn" onclick="viewCart()">🛒 Cart (<span id="cart-count">0</span>)</button>
+    </div>
+
+    <!-- Category Menu -->
+    <div class="category-menu">
+        <a href="#">Garden Plants</a>
+        <a href="#">Fruit Trees</a>
+        <a href="#">Flower Bulbs</a>
+        <a href="#">Houseplants</a>
+        <a href="#">Garden Supplies</a>
+        <a href="#">Contact</a>
+    </div>
+
+    <h1 style="text-align:center; color:#4CAF50;">🌿 Welcome to Our Gardening Shop</h1>
+    <p style="text-align:center;">Browse our high-quality gardening products and start your green journey today!</p>
+
+    <div class="product-container">
+        <div class="product">
+            <img src="seeds.jpg" alt="Seeds">
+            <h3>Organic Seeds</h3>
+            <p class="store">Store: Green Earth Farms</p>
+            <p class="rating">⭐⭐⭐⭐☆ (4.5)</p>
+            <p class="price">$5.99</p>
+            <button onclick="addToCart('Organic Seeds', 5.99)">🛒 Add to Cart</button>
+        </div>
+
+        <div class="product">
+            <img src="fertilizer.jpg" alt="Fertilizer">
+            <h3>Natural Fertilizer</h3>
+            <p class="store">Store: Eco Grow Supplies</p>
+            <p class="rating">⭐⭐⭐⭐⭐ (5.0)</p>
+            <p class="price">$12.99</p>
+            <button onclick="addToCart('Natural Fertilizer', 12.99)">🛒 Add to Cart</button>
+        </div>
+
+        <div class="product">
+            <img src="pots.jpg" alt="Pots">
+            <h3>Clay Plant Pots</h3>
+            <p class="store">Store: Terra Pots & Co.</p>
+            <p class="rating">⭐⭐⭐⭐☆ (4.3)</p>
+            <p class="price">$8.49</p>
+            <button onclick="addToCart('Clay Plant Pots', 8.49)">🛒 Add to Cart</button>
+        </div>
+
+        <div class="product">
+            <img src="soil.jpg" alt="Soil">
+            <h3>Organic Potting Soil</h3>
+            <p class="store">Store: Nature's Best Soil</p>
+            <p class="rating">⭐⭐⭐⭐⭐ (4.9)</p>
+            <p class="price">$10.99</p>
+            <button onclick="addToCart('Organic Potting Soil', 10.99)">🛒 Add to Cart</button>
+        </div>
+    </div>
+
+    <div class="cart">
+        <h2>🛍️ Your Shopping Cart</h2>
+        <ul id="cart-items"></ul>
+        <p><strong>Total:</strong> $<span id="total-price">0.00</span></p>
+        <button onclick="checkout()">Proceed to Checkout</button>
+    </div>
+
+</body>
+</html>

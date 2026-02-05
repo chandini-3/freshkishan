@@ -1,0 +1,89 @@
+/* General Styling */
+body {
+    font-family: 'Poppins', Arial, sans-serif;
+    background-color: #e6f7e6; /* Light green background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Form Container */
+#signup-form {
+    background: white;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+    transition: transform 0.3s ease-in-out;
+}
+
+#signup-form:hover {
+    transform: scale(1.02); /* Slight zoom effect on hover */
+}
+
+/* Header */
+h1 {
+    color: #2d572c;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+
+/* Input Group */
+.input-group {
+    margin: 12px 0;
+    text-align: left;
+}
+
+/* Labels */
+label {
+    font-weight: 600;
+    font-size: 14px;
+    color: #333;
+}
+
+/* Input Fields */
+input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    font-size: 15px;
+    transition: border 0.3s;
+}
+
+input:focus {
+    border: 1px solid #4CAF50;
+    outline: none;
+    box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+}
+
+/* Button */
+button {
+    background: linear-gradient(90deg, #4CAF50, #2d572c);
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    width: 100%;
+    font-weight: bold;
+    transition: background 0.3s ease-in-out;
+}
+
+button:hover {
+    background: linear-gradient(90deg, #2d572c, #4CAF50);
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    #signup-form {
+        width: 90%;
+        max-width: 350px;
+    }
+}

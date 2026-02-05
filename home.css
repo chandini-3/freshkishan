@@ -1,0 +1,71 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+}
+
+.banner {
+    background-color: #89A658; /* Matches the green color */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    color: white;
+}
+
+.logo-text h1 {
+    font-family: 'Cursive', sans-serif;
+    margin: 0;
+    font-size: 28px;
+}
+
+.logo-text p {
+    font-size: 14px;
+    margin: 0;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
+
+.icons {
+    display: flex;
+    align-items: center;
+}
+
+.icons a {
+    margin: 0 5px;
+}
+
+.icons a img {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.2s ease-in-out;
+}
+
+.icons a img:hover {
+    transform: scale(1.2); /* Slightly enlarges the icon on hover */
+}
+
+.newsletter {
+    display: flex;
+    align-items: center;
+}
+
+.signup-btn {
+    background-color: white;
+    color: #89A658;
+    text-decoration: none;
+    padding: 8px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.signup-btn:hover {
+    background-color: #77a042; /* Adds hover effect to button */
+    color: white;
+}
+
+.newsletter a img {
+    width: 24px;
+    height: 24px;
+    margin-left: 10px;
+}

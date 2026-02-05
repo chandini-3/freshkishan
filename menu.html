@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #dff0d8, #c8e6c9);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        /* Enlarged Menu Box */
+        .menu-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 400px;  /* Increased width */
+            animation: fadeIn 0.8s ease-in-out;
+        }
+
+        /* Title Styling */
+        h3 {
+            color: #2e7d32;
+            font-size: 26px;  /* Increased font size */
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        /* Enlarged Buttons */
+        .menu-link {
+            display: block;
+            width: 100%;
+            padding: 15px;  /* Increased padding */
+            margin: 12px 0;
+            text-decoration: none;
+            font-size: 18px;  /* Increased font size */
+            font-weight: bold;
+            color: white;
+            background: #4CAF50;
+            border-radius: 30px;  /* More rounded corners */
+            transition: 0.3s ease-in-out;
+        }
+
+        /* Button Hover Effect */
+        .menu-link:hover {
+            background: #388e3c;
+            transform: translateY(-3px);
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.3);
+        }
+
+        /* Fade-in animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="menu-container">
+        <h3>🌱 Welcome to Gardening Express</h3>
+        <a href="garden sign-in.html" target="rightFrame" class="menu-link">Login</a>
+        <a href="gardenup.html" target="rightFrame" class="menu-link">Sign Up</a>
+        <a href="forgot.html" target="rightFrame" class="menu-link">Forgot Password</a>
+    </div>
+
+</body>
+</html>

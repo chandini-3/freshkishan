@@ -1,0 +1,6 @@
+com\ecommerce\servlets\ProductServlet.class
+com\ecommerce\database\DatabaseConnection.class
+com\ecommerce\servlets\RegistrationServlet.class
+com\ecommerce\models\Product.class
+com\ecommerce\servlets\LoginServlet.class
+com\ecommerce\servlets\AddProductServlet.class

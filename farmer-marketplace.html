@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FarmerMandi - Agricultural Trading Platform</title>
+    <link rel="stylesheet" href="farmer-marketplace.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-top">
+                <div class="language-selector">
+                    <select id="languageSelect">
+                        <option value="en">English</option>
+                        <option value="hi">हिंदी</option>
+                        <option value="te">తెలుగు</option>
+                        <option value="ta">தமிழ்</option>
+                    </select>
+                </div>
+                <div class="search-bar">
+                    <select id="categoryFilter">
+                        <option value="">All Categories</option>
+                        <option value="seeds">Seeds</option>
+                        <option value="fertilizers">Fertilizers</option>
+                        <option value="tools">Tools</option>
+                        <option value="produce">Fresh Produce</option>
+                        <option value="grains">Grains</option>
+                        <option value="pesticides">Pesticides</option>
+                    </select>
+                    <input type="text" id="searchInput" placeholder="Search Products...">
+                    <button class="search-btn"><i class="fas fa-search"></i></button>
+                </div>
+                <div class="auth-section">
+                    <div class="dropdown">
+                        <button class="auth-btn">
+                            <i class="fas fa-user"></i> Login / Registration
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                        <div class="dropdown-content">
+                            <a href="#" onclick="farmerApp.showLoginModal('buyer')">
+                                <i class="fas fa-shopping-cart"></i> Login as Buyer
+                            </a>
+                            <a href="#" onclick="farmerApp.showLoginModal('seller')">
+                                <i class="fas fa-store"></i> Login as Seller
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="main-nav">
+                <div class="logo">
+                    <img src="logo.png" alt="FarmerMandi" class="logo-img">
+                    <h1>🌾 FarmerMandi</h1>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#" onclick="farmerApp.loadPage('home')"><i class="fas fa-home"></i> Home</a></li>
+                    <li><a href="#" onclick="farmerApp.loadPage('sell')"><i class="fas fa-seedling"></i> Sell</a></li>
+                    <li><a href="#" onclick="farmerApp.loadPage('buy')"><i class="fas fa-shopping-cart"></i> Buy</a></li>
+                    <li class="dropdown">
+                        <a href="#"><i class="fas fa-concierge-bell"></i> Services <i class="fas fa-chevron-down"></i></a>
+                        <div class="dropdown-content">
+                            <a href="#" onclick="farmerApp.loadPage('transport')">🚛 Transport</a>
+                            <a href="#" onclick="farmerApp.loadPage('inspection')">🔍 Inspection</a>
+                            <a href="#" onclick="farmerApp.loadPage('insurance')">🛡️ Insurance</a>
+                            <a href="#" onclick="farmerApp.loadPage('warehouse')">🏪 Warehouse</a>
+                        </div>
+                    </li>
+                    <li><a href="#" onclick="farmerApp.loadPage('deals')"><i class="fas fa-tags"></i> Deals</a></li>
+                    <li><a href="#" onclick="farmerApp.loadPage('about')"><i class="fas fa-info-circle"></i> About Us</a></li>
+                    <li><a href="#" onclick="farmerApp.loadPage('terms')"><i class="fas fa-file-contract"></i> Terms & Service</a></li>
+                </ul>
+                <div class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="mainContent">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <div class="hero-text">
+                    <h1>WELCOME TO FARMERMANDI - YOUR ULTIMATE AGRICULTURAL PRODUCTS TRADING PLATFORM</h1>
+                    <p>At FarmerMandi, we are committed to changing the way farmers, suppliers and buyers connect and do business in agriculture. Our platform allows small business owners to buy fresh produce directly from farmers and farmers to sell their produce directly to retailers, eliminating the middleman and keeping prices fair.</p>
+                    
+                    <div class="key-features">
+                        <h3>Key Features:</h3>
+                        <ul>
+                            <li>-Buy and sell various agricultural products online.</li>
+                            <li>-Easily connect with local farmers and buyers.</li>
+                            <li>-Compare fruit and vegetable prices from the comfort of your home.</li>
+                            <li>-FasalMandi brings all agricultural inputs from seed to market on a single, transparent platform.</li>
+                        </ul>
+                    </div>
+                    
+                    <p class="cta-text">Join us in building the future of Indian agriculture. Explore our online store where you can buy and sell products, buy wholesale and be part of a large farmer community.</p>
+                    
+                    <div class="cta-buttons">
+                        <button class="cta-btn primary" onclick="farmerApp.loadPage('register')">
+                            <i class="fas fa-user-plus"></i> Join as Farmer
+                        </button>
+                        <button class="cta-btn secondary" onclick="farmerApp.loadPage('buy')">
+                            <i class="fas fa-shopping-cart"></i> Start Buying
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="hero-mobile">
+                    <div class="mobile-frame">
+                        <div class="mobile-screen">
+                            <div class="mobile-header">
+                                <i class="fas fa-signal"></i>
+                                <span class="time">9:41</span>
+                                <i class="fas fa-battery-three-quarters"></i>
+                            </div>
+                            <div class="mobile-content">
+                                <div class="mobile-logo">
+                                    <h3>🌾 FarmerMandi</h3>
+                                </div>
+                                <div class="mobile-menu-grid">
+                                    <div class="mobile-menu-item buy">
+                                        <i class="fas fa-shopping-cart"></i>
+                                        <span>Buy</span>
+                                    </div>
+                                    <div class="mobile-menu-item sell">
+                                        <i class="fas fa-seedling"></i>
+                                        <span>Sell</span>
+                                    </div>
+                                    <div class="mobile-menu-item transport">
+                                        <i class="fas fa-truck"></i>
+                                        <span>Transport</span>
+                                    </div>
+                                    <div class="mobile-menu-item inspection">
+                                        <i class="fas fa-search"></i>
+                                        <span>Inspection</span>
+                                    </div>
+                                    <div class="mobile-menu-item insurance">
+                                        <i class="fas fa-shield-alt"></i>
+                                        <span>Insurance</span>
+                                    </div>
+                                    <div class="mobile-menu-item inbox">
+                                        <i class="fas fa-envelope"></i>
+                                        <span>Inbox</span>
+                                    </div>
+                                </div>
+                                <div class="mobile-bottom">
+                                    <i class="fas fa-money-bill-wave"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features">
+            <div class="container">
+                <h2>Why Choose FarmerMandi?</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <i class="fas fa-handshake"></i>
+                        <h3>Direct Connection</h3>
+                        <p>Connect directly with farmers and buyers, eliminating middlemen</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-chart-line"></i>
+                        <h3>Fair Pricing</h3>
+                        <p>Transparent pricing system ensuring fair deals for all parties</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-leaf"></i>
+                        <h3>Fresh Produce</h3>
+                        <p>Direct from farm to table, ensuring freshness and quality</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-mobile-alt"></i>
+                        <h3>Mobile Friendly</h3>
+                        <p>Access our platform anytime, anywhere from your mobile device</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-truck"></i>
+                        <h3>Logistics Support</h3>
+                        <p>Comprehensive transport and logistics solutions</p>
+                    </div>
+                    <div class="feature-card">
+                        <i class="fas fa-users"></i>
+                        <h3>Community</h3>
+                        <p>Join a growing community of farmers and agricultural businesses</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modalTitle">Login</h2>
+                <span class="close">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="username">Username/Email:</label>
+                        <input type="text" id="username" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password:</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="rememberMe"> Remember me
+                        </label>
+                    </div>
+                    <button type="submit" class="btn-submit">Login</button>
+                </form>
+                <div class="modal-footer">
+                    <p>Don't have an account? <a href="#" onclick="farmerApp.showRegisterModal()">Register here</a></p>
+                    <p><a href="#" onclick="farmerApp.showForgotPassword()">Forgot Password?</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>🌾 FarmerMandi</h3>
+                    <p>Empowering farmers and connecting agricultural communities across India.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">How It Works</a></li>
+                        <li><a href="#">Success Stories</a></li>
+                        <li><a href="#">Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#">Buy Products</a></li>
+                        <li><a href="#">Sell Products</a></li>
+                        <li><a href="#">Transport</a></li>
+                        <li><a href="#">Insurance</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <ul>
+                        <li><i class="fas fa-phone"></i> +91 98765 43210</li>
+                        <li><i class="fas fa-envelope"></i> info@farmermandi.com</li>
+                        <li><i class="fas fa-map-marker-alt"></i> New Delhi, India</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 FarmerMandi. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="farmer-marketplace.js"></script>
+</body>
+</html>

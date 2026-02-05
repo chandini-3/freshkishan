@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garden Login Page</title>
+</head>
+<body style="
+    background-image: url('veg1.jpg'); 
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+">
+
+    <div class="login-container form-with-background">
+        <h1>🌱 Garden Login</h1>
+        <form id="loginForm">
+            <div class="input-group">
+                <label for="username">Username</label><br>
+                <input type="text" id="username" placeholder="Enter your username" required><br>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label><br>
+                <input type="password" id="password" placeholder="Enter your password" required><br>
+            </div>
+            <button type="submit">Login</button>
+            <br>
+        </form>
+        <p>Don't have an account? <a href="gardenup.html">Sign up</a></p>
+    </div>
+
+    <script>
+        // Handle form submission
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
+            // Get username and password values
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            // Simple validation or authentication logic
+            if (username === "user" && password === "password") { // Replace with actual validation
+                alert('Login Successful! Redirecting...');
+                window.location.href = 'mainpg.html'; // Redirect to the homepage
+            } else {
+                alert('Invalid username or password. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>

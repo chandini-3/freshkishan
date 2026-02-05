@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gardening>
+    <users>
+        <user>
+            <username>gardenlover</username>
+            <password>securepass</password>
+        </user>
+        <user>
+            <username>plantmaster</username>
+            <password>greenlife</password>
+        </user>
+    </users>
+
+    <plants>
+        <plant>
+            <name>Rose</name>
+            <type>Flower</type>
+            <care>
+                <water>Twice a week</water>
+                <sunlight>Full Sun</sunlight>
+                <soil>Well-drained soil</soil>
+            </care>
+        </plant>
+        <plant>
+            <name>Tomato</name>
+            <type>Vegetable</type>
+            <care>
+                <water>Daily</water>
+                <sunlight>Full Sun</sunlight>
+                <soil>Rich, fertile soil</soil>
+            </care>
+        </plant>
+    </plants>
+
+    <products>
+        <product>
+            <name>Organic Fertilizer</name>
+            <price>200</price>
+            <description>Enhances plant growth naturally.</description>
+        </product>
+        <product>
+            <name>Garden Tools Set</name>
+            <price>800</price>
+            <description>Includes shovel, rake, and pruner.</description>
+        </product>
+    </products>
+</gardening>

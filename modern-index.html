@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Organic Farm Market - Fresh From Farm</title>
+    <link rel="stylesheet" href="modern-style.css">
+</head>
+<body>
+    <!-- Header Navigation -->
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-brand">
+                <h1>🌱 Fresh From Farm</h1>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" onclick="loadContent('home')">Home</a></li>
+                <li><a href="#products" onclick="loadContent('products')">Organic Products</a></li>
+                <li><a href="#farmers" onclick="loadContent('farmers')">Our Farmers</a></li>
+                <li><a href="#sell" onclick="loadContent('sell')">Sell Your Produce</a></li>
+                <li><a href="login.html">Login</a></li>
+                <li><a href="registerform.html">Register</a></li>
+            </ul>
+            <div class="auth-buttons" id="authButtons">
+                <a href="login.html" class="btn-login" id="loginBtn" 
+                   style="display: inline-flex !important; visibility: visible !important; opacity: 1 !important; text-decoration: none;">
+                    🔑 Login
+                </a>
+                <a href="registerform.html" class="btn-register" id="registerBtn" 
+                   style="display: inline-flex !important; visibility: visible !important; opacity: 1 !important; text-decoration: none;">
+                    📝 Register
+                </a>
+                <div class="user-toolbar" id="userToolbar" style="display: none;">
+                    <button class="cart-btn" onclick="organicApp.showCart()" title="View Cart">🛒 Cart</button>
+                    <span class="welcome-text" id="welcomeText">Welcome!</span>
+                    <button class="btn-logout" onclick="logout()">🚪 Logout</button>
+                </div>
+            </div>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('loginModal')">&times;</span>
+            <h2>🔑 Login to Your Account</h2>
+            <form id="loginForm" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="loginEmail">Email:</label>
+                    <input type="email" id="loginEmail" name="username" required>
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password:</label>
+                    <input type="password" id="loginPassword" name="password" required>
+                </div>
+                <button type="submit" class="btn-primary">Login</button>
+                <p><a href="#" onclick="closeModal('loginModal'); showRegisterForm()">Don't have an account? Register here</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div id="registerModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('registerModal')">&times;</span>
+            <h2>📝 Create New Account</h2>
+            <form id="registerForm" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label for="registerName">Full Name:</label>
+                    <input type="text" id="registerName" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email:</label>
+                    <input type="email" id="registerEmail" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password:</label>
+                    <input type="password" id="registerPassword" name="password" required>
+                </div>
+                <div class="form-group">
+                    <label for="registerPhone">Phone:</label>
+                    <input type="tel" id="registerPhone" name="phone" required>
+                </div>
+                <div class="form-group">
+                    <label for="userType">Account Type:</label>
+                    <select id="userType" name="user_type" required>
+                        <option value="customer">Customer</option>
+                        <option value="farmer">Farmer</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary">Register</button>
+                <p><a href="#" onclick="closeModal('registerModal'); showLoginForm()">Already have an account? Login here</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-content">
+            <h3>Shop by Category</h3>
+            <ul>
+                <li><a href="#" onclick="loadContent('vegetables')">🥕 Fresh Vegetables</a></li>
+                <li><a href="#" onclick="loadContent('fruits')">🍎 Organic Fruits</a></li>
+                <li><a href="#" onclick="loadContent('grains')">🌾 Grains & Cereals</a></li>
+                <li><a href="#" onclick="loadContent('dairy')">🥛 Farm Fresh Dairy</a></li>
+                <li><a href="#" onclick="loadContent('herbs')">🌿 Herbs & Spices</a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <main class="main-content" id="mainContent">
+        <div class="hero-section">
+            <h1>Fresh Organic Produce Direct From Farmers</h1>
+            <p>Connect with local farmers and buy fresh, organic produce directly from the source. Support sustainable farming while enjoying the best quality food.</p>
+            <button class="cta-button" onclick="loadContent('products')">Shop Fresh Produce</button>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>About Fresh From Farm</h3>
+                <p>Connecting farmers directly with customers for the freshest organic produce.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="#" onclick="loadContent('farmer-registration')">Become a Farmer</a></li>
+                    <li><a href="#" onclick="loadContent('delivery-info')">Delivery Info</a></li>
+                    <li><a href="#" onclick="loadContent('contact')">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="social-links">
+                    <a href="#"><img src="facebook.jpg" alt="Facebook"></a>
+                    <a href="#"><img src="instagram.jpg" alt="Instagram"></a>
+                    <a href="#"><img src="youtube.png" alt="YouTube"></a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="organic-app.js"></script>
+    <script>
+        // Login and Registration Functions
+        function showLoginForm() {
+            document.getElementById('loginModal').style.display = 'block';
+        }
+
+        function showRegisterForm() {
+            document.getElementById('registerModal').style.display = 'block';
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Handle Login Form Submission
+        async function handleLogin(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            
+            try {
+                const response = await fetch('/gar/LoginServlet', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('Login successful!');
+                    closeModal('loginModal');
+                    // Update UI to show logged in state
+                    document.getElementById('loginBtn').style.display = 'none';
+                    document.getElementById('registerBtn').style.display = 'none';
+                    document.getElementById('userToolbar').style.display = 'flex';
+                    document.getElementById('welcomeText').textContent = `Welcome, ${result.userName || 'User'}!`;
+                } else {
+                    alert('Login failed: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                alert('Login failed: Network error');
+            }
+        }
+
+        // Handle Register Form Submission
+        async function handleRegister(event) {
+            event.preventDefault();
+            const formData = new FormData(event.target);
+            
+            try {
+                const response = await fetch('/gar/RegistrationServlet', {
+                    method: 'POST',
+                    body: formData
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('Registration successful! Please login.');
+                    closeModal('registerModal');
+                    showLoginForm();
+                } else {
+                    alert('Registration failed: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                alert('Registration failed: Network error');
+            }
+        }
+
+        // Logout Function
+        function logout() {
+            // Clear session and update UI
+            document.getElementById('loginBtn').style.display = 'inline-flex';
+            document.getElementById('registerBtn').style.display = 'inline-flex';
+            document.getElementById('userToolbar').style.display = 'none';
+            alert('Logged out successfully!');
+        }
+
+        // Check login status on page load
+        window.addEventListener('load', async function() {
+            try {
+                const response = await fetch('/gar/LoginServlet', {
+                    method: 'GET'
+                });
+                const result = await response.json();
+                
+                if (result.loggedIn) {
+                    document.getElementById('loginBtn').style.display = 'none';
+                    document.getElementById('registerBtn').style.display = 'none';
+                    document.getElementById('userToolbar').style.display = 'flex';
+                    document.getElementById('welcomeText').textContent = `Welcome, ${result.userName}!`;
+                }
+            } catch (error) {
+                console.log('Session check failed:', error);
+            }
+        });
+    </script>
+</body>
+</html>

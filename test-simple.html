@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Simple Clicks</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 2rem; }
+        button { padding: 1rem; margin: 0.5rem; font-size: 1rem; }
+    </style>
+</head>
+<body>
+    <h1>Simple Click Test</h1>
+    <button onclick="alert('Button 1 clicked!')">Test Button 1</button>
+    <button onclick="testFunction()">Test Button 2</button>
+    <a href="#" onclick="alert('Link clicked!'); return false;">Test Link</a>
+    
+    <script>
+        function testFunction() {
+            alert('JavaScript function called!');
+        }
+        console.log('Simple test page loaded');
+    </script>
+</body>
+</html>

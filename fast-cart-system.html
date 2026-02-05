@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🛒 Fast Cart System - Fresh Farm Market</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; background: #f5f5f5; }
+        
+        /* Header */
+        .header { background: #4CAF50; color: white; padding: 15px 0; position: fixed; top: 0; width: 100%; z-index: 1000; }
+        .nav { display: flex; justify-content: space-between; align-items: center; max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .logo { font-size: 24px; font-weight: bold; }
+        .cart-btn { background: #45a049; color: white; border: none; padding: 10px 20px; border-radius: 25px; cursor: pointer; font-size: 16px; }
+        .cart-btn:hover { background: #3d8b40; }
+        
+        /* Main Content */
+        .main { margin-top: 80px; padding: 20px; max-width: 1200px; margin-left: auto; margin-right: auto; }
+        
+        /* Products Grid */
+        .products { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin: 20px 0; }
+        .product { background: white; border-radius: 10px; padding: 20px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); text-align: center; }
+        .product img { width: 150px; height: 150px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; }
+        .product h3 { color: #333; margin-bottom: 10px; }
+        .product .price { color: #4CAF50; font-size: 20px; font-weight: bold; margin-bottom: 15px; }
+        .add-btn { background: #4CAF50; color: white; border: none; padding: 12px 24px; border-radius: 25px; cursor: pointer; font-size: 16px; }
+        .add-btn:hover { background: #45a049; }
+        
+        /* Cart Modal */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 2000; }
+        .modal-content { background: white; margin: 5% auto; padding: 30px; border-radius: 15px; width: 90%; max-width: 600px; max-height: 80vh; overflow-y: auto; }
+        .close { float: right; font-size: 28px; cursor: pointer; color: #aaa; }
+        .close:hover { color: #000; }
+        
+        /* Cart Items */
+        .cart-item { display: flex; align-items: center; gap: 15px; padding: 15px 0; border-bottom: 1px solid #eee; }
+        .cart-item:last-child { border-bottom: none; }
+        .cart-item img { width: 60px; height: 60px; object-fit: cover; border-radius: 8px; }
+        .item-info { flex: 1; }
+        .item-name { font-weight: bold; color: #333; }
+        .item-price { color: #4CAF50; font-size: 16px; }
+        .quantity-controls { display: flex; align-items: center; gap: 10px; }
+        .qty-btn { background: #ddd; border: none; width: 30px; height: 30px; border-radius: 50%; cursor: pointer; }
+        .qty-btn:hover { background: #ccc; }
+        .remove-btn { background: #f44336; color: white; border: none; padding: 5px 10px; border-radius: 5px; cursor: pointer; }
+        
+        /* Cart Summary */
+        .cart-summary { border-top: 2px solid #eee; padding-top: 20px; margin-top: 20px; }
+        .total { font-size: 24px; font-weight: bold; color: #4CAF50; text-align: center; margin-bottom: 20px; }
+        .checkout-btn { width: 100%; background: #4CAF50; color: white; border: none; padding: 15px; border-radius: 10px; font-size: 18px; cursor: pointer; }
+        .checkout-btn:hover { background: #45a049; }
+        
+        /* Order Page */
+        .order-page { background: white; padding: 30px; border-radius: 15px; margin: 20px 0; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #333; }
+        .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 12px; border: 2px solid #ddd; border-radius: 8px; font-size: 16px; }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus { border-color: #4CAF50; outline: none; }
+        .place-order-btn { width: 100%; background: #4CAF50; color: white; border: none; padding: 18px; border-radius: 10px; font-size: 20px; cursor: pointer; margin-top: 20px; }
+        .place-order-btn:hover { background: #45a049; }
+        
+        /* Success Page */
+        .success-page { text-align: center; padding: 50px; }
+        .success-icon { font-size: 80px; color: #4CAF50; margin-bottom: 20px; }
+        .success-page h1 { color: #4CAF50; margin-bottom: 20px; }
+        
+        /* Empty Cart */
+        .empty-cart { text-align: center; padding: 50px; }
+        .empty-cart .icon { font-size: 60px; color: #ccc; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav">
+            <div class="logo">🚜 Fresh Farm Market</div>
+            <button class="cart-btn" onclick="showCart()">
+                🛒 Cart (<span id="cartCount">0</span>)
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <h1>🌱 Fresh Organic Products</h1>
+        <p>Direct from local farmers - 100% fresh guarantee!</p>
+        
+        <!-- Products -->
+        <div class="products" id="products">
+            <div class="product">
+                <img src="tomatoes.jpg" alt="Organic Tomatoes" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDE1MCAxNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjE1MCIgaGVpZ2h0PSIxNTAiIGZpbGw9IiNmNWY1ZjUiLz48dGV4dCB4PSI3NSIgeT0iNzUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI0MCIgZmlsbD0iI2NjYyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPvCfkYU8L3RleHQ+PC9zdmc+'">
+                <h3>Fresh Organic Tomatoes</h3>
+                <div class="price">₹40/kg</div>
+                <button class="add-btn" onclick="addToCart(1, 'Fresh Organic Tomatoes', 40)">🛒 Add to Cart</button>
+            </div>
+            
+            <div class="product">
+                <img src="carrots.jpg" alt="Fresh Carrots" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDE1MCAxNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjE1MCIgaGVpZ2h0PSIxNTAiIGZpbGw9IiNmNWY1ZjUiLz48dGV4dCB4PSI3NSIgeT0iNzUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI0MCIgZmlsbD0iI2NjYyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPvCflKU8L3RleHQ+PC9zdmc+'">
+                <h3>Fresh Carrots</h3>
+                <div class="price">₹35/kg</div>
+                <button class="add-btn" onclick="addToCart(2, 'Fresh Carrots', 35)">🛒 Add to Cart</button>
+            </div>
+            
+            <div class="product">
+                <img src="potatoes.jpg" alt="Organic Potatoes" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDE1MCAxNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjE1MCIgaGVpZ2h0PSIxNTAiIGZpbGw9IiNmNWY1ZjUiLz48dGV4dCB4PSI3NSIgeT0iNzUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI0MCIgZmlsbD0iI2NjYyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPvCflY48L3RleHQ+PC9zdmc+'">
+                <h3>Organic Potatoes</h3>
+                <div class="price">₹25/kg</div>
+                <button class="add-btn" onclick="addToCart(3, 'Organic Potatoes', 25)">🛒 Add to Cart</button>
+            </div>
+            
+            <div class="product">
+                <img src="onions.jpg" alt="Fresh Onions" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDE1MCAxNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjE1MCIgaGVpZ2h0PSIxNTAiIGZpbGw9IiNmNWY1ZjUiLz48dGV4dCB4PSI3NSIgeT0iNzUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI0MCIgZmlsbD0iI2NjYyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPvCfjrc8L3RleHQ+PC9zdmc+'">
+                <h3>Fresh Onions</h3>
+                <div class="price">₹30/kg</div>
+                <button class="add-btn" onclick="addToCart(4, 'Fresh Onions', 30)">🛒 Add to Cart</button>
+            </div>
+            
+            <div class="product">
+                <img src="cabbage.jpg" alt="Organic Cabbage" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDE1MCAxNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjE1MCIgaGVpZ2h0PSIxNTAiIGZpbGw9IiNmNWY1ZjUiLz48dGV4dCB4PSI3NSIgeT0iNzUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI0MCIgZmlsbD0iI2NjYyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPvCfpac8L3RleHQ+PC9zdmc+'">
+                <h3>Organic Cabbage</h3>
+                <div class="price">₹20/kg</div>
+                <button class="add-btn" onclick="addToCart(5, 'Organic Cabbage', 20)">🛒 Add to Cart</button>
+            </div>
+            
+            <div class="product">
+                <img src="seeds.jpg" alt="Garden Seeds" onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgdmlld0JveD0iMCAwIDE1MCAxNTAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjE1MCIgaGVpZ2h0PSIxNTAiIGZpbGw9IiNmNWY1ZjUiLz48dGV4dCB4PSI3NSIgeT0iNzUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI0MCIgZmlsbD0iI2NjYyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPvCfjJE8L3RleHQ+PC9zdmc+'">
+                <h3>Garden Seeds Mix</h3>
+                <div class="price">₹15/pack</div>
+                <button class="add-btn" onclick="addToCart(6, 'Garden Seeds Mix', 15)">🛒 Add to Cart</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Cart Modal -->
+    <div class="modal" id="cartModal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCart()">&times;</span>
+            <h2>🛒 Your Shopping Cart</h2>
+            <div id="cartItems"></div>
+        </div>
+    </div>
+
+    <script>
+        // Fast Cart System - Local Storage Based
+        let cart = JSON.parse(localStorage.getItem('fastCart')) || [];
+
+        function updateCartCount() {
+            const count = cart.reduce((total, item) => total + item.quantity, 0);
+            document.getElementById('cartCount').textContent = count;
+        }
+
+        function addToCart(id, name, price) {
+            const existingItem = cart.find(item => item.id === id);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: id,
+                    name: name,
+                    price: price,
+                    quantity: 1
+                });
+            }
+            
+            localStorage.setItem('fastCart', JSON.stringify(cart));
+            updateCartCount();
+            
+            // Show quick success message
+            showToast(`✅ ${name} added to cart!`);
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            localStorage.setItem('fastCart', JSON.stringify(cart));
+            updateCartCount();
+            displayCartItems();
+        }
+
+        function updateQuantity(id, change) {
+            const item = cart.find(item => item.id === id);
+            if (item) {
+                item.quantity += change;
+                if (item.quantity <= 0) {
+                    removeFromCart(id);
+                } else {
+                    localStorage.setItem('fastCart', JSON.stringify(cart));
+                    updateCartCount();
+                    displayCartItems();
+                }
+            }
+        }
+
+        function showCart() {
+            displayCartItems();
+            document.getElementById('cartModal').style.display = 'block';
+        }
+
+        function closeCart() {
+            document.getElementById('cartModal').style.display = 'none';
+        }
+
+        function displayCartItems() {
+            const cartItemsDiv = document.getElementById('cartItems');
+            
+            if (cart.length === 0) {
+                cartItemsDiv.innerHTML = `
+                    <div class="empty-cart">
+                        <div class="icon">🛒</div>
+                        <h3>Your cart is empty</h3>
+                        <p>Add some fresh products to get started!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            let total = 0;
+            let html = '';
+            
+            cart.forEach(item => {
+                const itemTotal = item.price * item.quantity;
+                total += itemTotal;
+                
+                html += `
+                    <div class="cart-item">
+                        <img src="${item.name.toLowerCase().replace(/ /g, '-')}.jpg" alt="${item.name}" 
+                             onerror="this.src='data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIGZpbGw9IiNmNWY1ZjUiLz48dGV4dCB4PSIzMCIgeT0iMzAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyMCIgZmlsbD0iI2NjYyIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPvCfjYM8L3RleHQ+PC9zdmc+'">
+                        <div class="item-info">
+                            <div class="item-name">${item.name}</div>
+                            <div class="item-price">₹${item.price} each</div>
+                        </div>
+                        <div class="quantity-controls">
+                            <button class="qty-btn" onclick="updateQuantity(${item.id}, -1)">-</button>
+                            <span>${item.quantity}</span>
+                            <button class="qty-btn" onclick="updateQuantity(${item.id}, 1)">+</button>
+                        </div>
+                        <div style="text-align: right;">
+                            <div style="font-weight: bold; color: #4CAF50;">₹${itemTotal}</div>
+                            <button class="remove-btn" onclick="removeFromCart(${item.id})">Remove</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += `
+                <div class="cart-summary">
+                    <div class="total">Total: ₹${total}</div>
+                    <button class="checkout-btn" onclick="proceedToCheckout()">
+                        ✅ Proceed to Checkout
+                    </button>
+                </div>
+            `;
+            
+            cartItemsDiv.innerHTML = html;
+        }
+
+        function proceedToCheckout() {
+            closeCart();
+            showOrderPage();
+        }
+
+        function showOrderPage() {
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            document.querySelector('.main').innerHTML = `
+                <div class="order-page">
+                    <h1>🛒 Complete Your Order</h1>
+                    <p>Total Amount: <strong style="color: #4CAF50; font-size: 24px;">₹${total}</strong></p>
+                    
+                    <form id="orderForm">
+                        <div class="form-group">
+                            <label>📝 Full Name *</label>
+                            <input type="text" id="fullName" required placeholder="Enter your full name">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>📱 Phone Number *</label>
+                            <input type="tel" id="phone" required placeholder="Enter your phone number">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>🏠 Delivery Address *</label>
+                            <textarea id="address" required rows="3" placeholder="Enter your complete delivery address"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>💳 Payment Method *</label>
+                            <select id="payment" required>
+                                <option value="">Choose payment method</option>
+                                <option value="Cash on Delivery">💵 Cash on Delivery</option>
+                                <option value="UPI Payment">📱 UPI Payment</option>
+                                <option value="Online Payment">🌐 Online Payment</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label>🕐 Preferred Delivery Time</label>
+                            <select id="deliveryTime">
+                                <option value="Morning (9 AM - 12 PM)">🌅 Morning (9 AM - 12 PM)</option>
+                                <option value="Afternoon (12 PM - 4 PM)">☀️ Afternoon (12 PM - 4 PM)</option>
+                                <option value="Evening (4 PM - 8 PM)">🌆 Evening (4 PM - 8 PM)</option>
+                            </select>
+                        </div>
+                        
+                        <button type="submit" class="place-order-btn">
+                            ✅ Place Order - ₹${total}
+                        </button>
+                    </form>
+                    
+                    <div style="margin-top: 20px; text-align: center;">
+                        <button onclick="location.reload()" style="background: #6c757d; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+                            ← Back to Shopping
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('orderForm').onsubmit = function(e) {
+                e.preventDefault();
+                placeOrder();
+            };
+        }
+
+        function placeOrder() {
+            const fullName = document.getElementById('fullName').value;
+            const phone = document.getElementById('phone').value;
+            const address = document.getElementById('address').value;
+            const payment = document.getElementById('payment').value;
+            
+            if (!fullName || !phone || !address || !payment) {
+                alert('Please fill all required fields!');
+                return;
+            }
+            
+            // Generate order number
+            const orderNumber = 'FF' + Date.now().toString().slice(-6);
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            
+            // Clear cart
+            cart = [];
+            localStorage.setItem('fastCart', JSON.stringify(cart));
+            updateCartCount();
+            
+            // Show success page
+            document.querySelector('.main').innerHTML = `
+                <div class="success-page">
+                    <div class="success-icon">✅</div>
+                    <h1>Order Placed Successfully!</h1>
+                    <p>Thank you ${fullName}! Your order has been confirmed.</p>
+                    
+                    <div style="background: #f8fff8; border: 2px solid #4CAF50; border-radius: 10px; padding: 20px; margin: 20px 0; text-align: left; max-width: 400px; margin: 20px auto;">
+                        <h3>📋 Order Details</h3>
+                        <p><strong>Order Number:</strong> #${orderNumber}</p>
+                        <p><strong>Total Amount:</strong> ₹${total}</p>
+                        <p><strong>Payment Method:</strong> ${payment}</p>
+                        <p><strong>Delivery Address:</strong> ${address}</p>
+                        <p><strong>Phone:</strong> ${phone}</p>
+                        <p><strong>Status:</strong> <span style="color: #4CAF50;">Confirmed ✅</span></p>
+                    </div>
+                    
+                    <div style="background: #e8f5e9; padding: 20px; border-radius: 10px; margin: 20px 0;">
+                        <h3>🚚 What's Next?</h3>
+                        <p>• Your order is being prepared by our farmers</p>
+                        <p>• You'll receive SMS updates on delivery status</p>
+                        <p>• Expected delivery: Within 24 hours</p>
+                        <p>• Our delivery partner will call before arrival</p>
+                    </div>
+                    
+                    <button onclick="location.reload()" style="background: #4CAF50; color: white; border: none; padding: 15px 30px; border-radius: 10px; font-size: 18px; cursor: pointer; margin: 10px;">
+                        🛒 Continue Shopping
+                    </button>
+                    
+                    <button onclick="window.print()" style="background: #6c757d; color: white; border: none; padding: 15px 30px; border-radius: 10px; font-size: 18px; cursor: pointer; margin: 10px;">
+                        🖨️ Print Order
+                    </button>
+                </div>
+            `;
+        }
+
+        function showToast(message) {
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed; top: 100px; right: 20px; background: #4CAF50; color: white;
+                padding: 15px 25px; border-radius: 25px; z-index: 3000; 
+                box-shadow: 0 4px 12px rgba(0,0,0,0.3); font-weight: bold;
+                transform: translateX(400px); transition: transform 0.3s ease;
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            setTimeout(() => toast.style.transform = 'translateX(0)', 100);
+            setTimeout(() => {
+                toast.style.transform = 'translateX(400px)';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('cartModal');
+            if (event.target === modal) {
+                closeCart();
+            }
+        }
+
+        // Initialize cart count on page load
+        updateCartCount();
+        
+        // Show welcome message
+        setTimeout(() => {
+            showToast('🌱 Welcome to Fresh Farm Market! Add products to cart.');
+        }, 1000);
+    </script>
+</body>
+</html>

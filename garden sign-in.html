@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garden Login Page</title>
+    <link rel="stylesheet" href="gar.css">
+    <style>
+        .form-with-background {
+            background-color: rgba(0, 0, 0, 0.6);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 300px;
+            margin: 0 auto;
+            color: white;
+            font-family: Arial, sans-serif;
+            opacity: 0;
+            animation: fadeIn 1s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        label {
+            color: #4c93af;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 2px solid #4c93af;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #2d9c6a;
+            box-shadow: 0 0 5px rgba(45, 156, 106, 0.5);
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4c93af;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #2d9c6a;
+        }
+
+        .input-group {
+            margin-bottom: 15px;
+        }
+
+        .error-message {
+            color: red;
+            font-size: 14px;
+            margin-bottom: 10px;
+            text-align: center;
+            display: none;
+        }
+    </style>
+</head>
+<body style="
+    background-image: url('lbg.jpg'); 
+    background-size: cover; 
+    background-position: center; 
+    background-repeat: no-repeat; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    height: 100vh; 
+">
+    <div class="login-container form-with-background">
+        <h1>🌱 Garden Login</h1>
+        <div id="error-message" class="error-message"></div>
+        <form id="loginForm">
+            <div class="input-group">
+                <label for="username">Username</label><br>
+                <input type="text" id="username" name="username" placeholder="Enter your username" required><br>
+            </div>
+            <div class="input-group">
+                <label for="password">Password</label><br>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required><br>
+            </div>
+            <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href="gardenup.html">Sign up</a></p>
+        <p>Forgot password? <a href="forgot.html">Forgot</a></p>
+    </div>
+
+    <script>
+        // Check for error message in URL and display it
+        const urlParams = new URLSearchParams(window.location.search);
+        const error = urlParams.get('error');
+
+        if (error) {
+            const errorMessageDiv = document.getElementById('error-message');
+            errorMessageDiv.textContent = error;
+            errorMessageDiv.style.display = 'block';
+        }
+
+        // Handle login form submission
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form from submitting normally
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username && password) {
+                alert("Successful Login!");
+                window.location.href = "index.html"; // Redirect to index.html
+            } else {
+                alert("Please enter valid credentials.");
+            }
+        });
+    </script>
+</body>
+</html>

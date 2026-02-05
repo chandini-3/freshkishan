@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart Debug Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; max-width: 800px; margin: 0 auto; }
+        .test-section { background: #f5f5f5; padding: 20px; margin: 10px 0; border-radius: 8px; }
+        .product-card { background: white; padding: 15px; margin: 10px 0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .btn { background: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin: 5px; }
+        .btn:hover { background: #45a049; }
+        .cart-display { background: #e8f5e8; padding: 15px; margin: 10px 0; border-radius: 8px; }
+        .result { background: #fff3cd; padding: 10px; margin: 5px 0; border-radius: 4px; }
+        .error { background: #f8d7da; color: #721c24; }
+        .success { background: #d4edda; color: #155724; }
+    </style>
+</head>
+<body>
+    <h1>🛒 Cart Functionality Debug Test</h1>
+    
+    <div class="test-section">
+        <h2>Step 1: Test User Login</h2>
+        <button class="btn" onclick="testLogin()">Login as Test User</button>
+        <button class="btn" onclick="checkLoginStatus()">Check Login Status</button>
+        <div id="loginStatus" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Step 2: Test Add to Cart</h2>
+        <div class="product-card">
+            <h3>🍅 Organic Tomatoes - ₹40/kg</h3>
+            <button class="btn" onclick="testAddToCart(1, 'Organic Tomatoes', 40)">Add to Cart</button>
+        </div>
+        <div class="product-card">
+            <h3>🥔 Organic Potatoes - ₹25/kg</h3>
+            <button class="btn" onclick="testAddToCart(2, 'Organic Potatoes', 25)">Add to Cart</button>
+        </div>
+        <div id="addResult" class="result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Step 3: View Cart Contents</h2>
+        <button class="btn" onclick="testViewCart()">Load Cart from Database</button>
+        <div id="cartContents" class="cart-display"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>Step 4: Test Servlet Connections</h2>
+        <button class="btn" onclick="testCartServlet()">Test Cart Servlet</button>
+        <button class="btn" onclick="testOrderServlet()">Test Order Servlet</button>
+        <div id="servletResults" class="result"></div>
+    </div>
+
+    <script>
+        let currentUser = null;
+
+        function testLogin() {
+            fetch('/gar/LoginServlet', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'username=testuser&password=test123'
+            })
+            .then(response => response.json())
+            .then(data => {
+                const statusDiv = document.getElementById('loginStatus');
+                if (data.success) {
+                    currentUser = { id: data.user_id, username: data.username, fullName: data.full_name };
+                    statusDiv.innerHTML = `<span class="success">✅ Login successful! User: ${data.full_name} (ID: ${data.user_id})</span>`;
+                    statusDiv.className = 'result success';
+                } else {
+                    statusDiv.innerHTML = `<span class="error">❌ Login failed: ${data.message}</span>`;
+                    statusDiv.className = 'result error';
+                }
+            })
+            .catch(error => {
+                document.getElementById('loginStatus').innerHTML = `<span class="error">❌ Login error: ${error}</span>`;
+            });
+        }
+
+        function checkLoginStatus() {
+            const statusDiv = document.getElementById('loginStatus');
+            if (currentUser) {
+                statusDiv.innerHTML = `<span class="success">✅ User logged in: ${currentUser.fullName} (ID: ${currentUser.id})</span>`;
+            } else {
+                statusDiv.innerHTML = `<span class="error">❌ No user logged in</span>`;
+            }
+        }
+
+        function testAddToCart(productId, productName, price) {
+            if (!currentUser) {
+                document.getElementById('addResult').innerHTML = `<span class="error">❌ Please login first</span>`;
+                return;
+            }
+
+            fetch('/gar/CartServlet', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `action=add&product_id=${productId}&quantity=1`
+            })
+            .then(response => response.json())
+            .then(data => {
+                const resultDiv = document.getElementById('addResult');
+                if (data.success) {
+                    resultDiv.innerHTML = `<span class="success">✅ ${productName} added to cart successfully!</span>`;
+                    resultDiv.className = 'result success';
+                } else {
+                    resultDiv.innerHTML = `<span class="error">❌ Failed to add ${productName}: ${data.message}</span>`;
+                    resultDiv.className = 'result error';
+                }
+            })
+            .catch(error => {
+                document.getElementById('addResult').innerHTML = `<span class="error">❌ Error adding to cart: ${error}</span>`;
+            });
+        }
+
+        function testViewCart() {
+            if (!currentUser) {
+                document.getElementById('cartContents').innerHTML = `<span class="error">❌ Please login first</span>`;
+                return;
+            }
+
+            fetch('/gar/CartServlet')
+            .then(response => response.json())
+            .then(data => {
+                const cartDiv = document.getElementById('cartContents');
+                if (data.success) {
+                    if (data.cart_items && data.cart_items.length > 0) {
+                        let html = `<h3>🛒 Cart Contents (${data.item_count} items)</h3>`;
+                        data.cart_items.forEach(item => {
+                            html += `
+                                <div style="background: white; padding: 10px; margin: 5px 0; border-radius: 4px;">
+                                    <strong>${item.name}</strong> - ₹${item.price} × ${item.quantity} = ₹${item.total}
+                                </div>
+                            `;
+                        });
+                        html += `<div style="background: #4CAF50; color: white; padding: 10px; border-radius: 4px; text-align: center;">
+                                    <strong>Total: ₹${data.total_amount}</strong>
+                                    <br><button class="btn" onclick="showCheckoutForm()" style="background: white; color: #4CAF50; margin-top: 10px;">
+                                        🛒 Proceed to Checkout
+                                    </button>
+                                 </div>`;
+                        cartDiv.innerHTML = html;
+                    } else {
+                        cartDiv.innerHTML = `<span class="success">✅ Cart is empty</span>`;
+                    }
+                } else {
+                    cartDiv.innerHTML = `<span class="error">❌ Error loading cart: ${data.message}</span>`;
+                }
+            })
+            .catch(error => {
+                document.getElementById('cartContents').innerHTML = `<span class="error">❌ Error: ${error}</span>`;
+            });
+        }
+
+        function showCheckoutForm() {
+            const checkoutHTML = `
+                <div style="background: white; padding: 20px; border-radius: 8px; margin-top: 20px;">
+                    <h3>🛒 Checkout Form</h3>
+                    <form id="testCheckoutForm">
+                        <div style="margin-bottom: 15px;">
+                            <label>Full Name:</label><br>
+                            <input type="text" id="fullName" value="${currentUser.fullName}" style="width: 100%; padding: 8px;">
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <label>Shipping Address:</label><br>
+                            <textarea id="shippingAddress" rows="3" placeholder="Enter delivery address" style="width: 100%; padding: 8px;"></textarea>
+                        </div>
+                        <div style="margin-bottom: 15px;">
+                            <label>Payment Method:</label><br>
+                            <select id="paymentMethod" style="width: 100%; padding: 8px;">
+                                <option value="Cash on Delivery">Cash on Delivery</option>
+                                <option value="Online Payment">Online Payment</option>
+                            </select>
+                        </div>
+                        <button type="button" class="btn" onclick="testPlaceOrder()">✅ Place Order</button>
+                    </form>
+                </div>
+            `;
+            document.getElementById('cartContents').innerHTML += checkoutHTML;
+        }
+
+        function testPlaceOrder() {
+            const fullName = document.getElementById('fullName').value;
+            const shippingAddress = document.getElementById('shippingAddress').value;
+            const paymentMethod = document.getElementById('paymentMethod').value;
+
+            if (!shippingAddress) {
+                alert('Please enter shipping address');
+                return;
+            }
+
+            fetch('/gar/OrderServlet', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: `action=create_order&shipping_address=${encodeURIComponent(fullName + '\\n' + shippingAddress)}&payment_method=${encodeURIComponent(paymentMethod)}&delivery_time=Morning&special_instructions=Test order`
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert(`✅ Order placed successfully!\\nOrder Number: ${data.order_number}\\nTotal: ₹${data.total_amount}`);
+                    testViewCart(); // Refresh cart (should be empty now)
+                } else {
+                    alert(`❌ Order failed: ${data.message}`);
+                }
+            })
+            .catch(error => {
+                alert(`❌ Error placing order: ${error}`);
+            });
+        }
+
+        function testCartServlet() {
+            fetch('/gar/CartServlet')
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('servletResults').innerHTML = `<span class="success">✅ Cart Servlet responding</span>`;
+            })
+            .catch(error => {
+                document.getElementById('servletResults').innerHTML = `<span class="error">❌ Cart Servlet not responding: ${error}</span>`;
+            });
+        }
+
+        function testOrderServlet() {
+            fetch('/gar/OrderServlet', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'action=get_orders'
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('servletResults').innerHTML += `<br><span class="success">✅ Order Servlet responding</span>`;
+            })
+            .catch(error => {
+                document.getElementById('servletResults').innerHTML += `<br><span class="error">❌ Order Servlet not responding: ${error}</span>`;
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gardening Website</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            text-align: center;
+        }
+        .container {
+            width: 60%;
+            margin: auto;
+            padding: 20px;
+            background: white;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+        }
+        h2 {
+            color: green;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        li {
+            background: #e0ffe0;
+            padding: 10px;
+            margin: 5px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Welcome to Gardening World 🌱</h1>
+        <h2>Available Plants</h2>
+        <ul id="plantList"></ul>
+
+        <h2>Our Products</h2>
+        <ul id="productList"></ul>
+    </div>
+
+    <script>
+        // Function to load XML and display data
+        function loadXMLData() {
+            let xhr = new XMLHttpRequest();
+            xhr.open("GET", "gardening.xml", true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    let xmlDoc = xhr.responseXML;
+
+                    // Get plant details
+                    let plants = xmlDoc.getElementsByTagName("plant");
+                    let plantList = document.getElementById("plantList");
+                    for (let i = 0; i < plants.length; i++) {
+                        let name = plants[i].getElementsByTagName("name")[0].textContent;
+                        let type = plants[i].getElementsByTagName("type")[0].textContent;
+                        let water = plants[i].getElementsByTagName("water")[0].textContent;
+                        let sunlight = plants[i].getElementsByTagName("sunlight")[0].textContent;
+
+                        let listItem = document.createElement("li");
+                        listItem.innerHTML = `<strong>${name}</strong> (${type}) <br> 
+                                              Water: ${water} | Sunlight: ${sunlight}`;
+                        plantList.appendChild(listItem);
+                    }
+
+                    // Get product details
+                    let products = xmlDoc.getElementsByTagName("product");
+                    let productList = document.getElementById("productList");
+                    for (let i = 0; i < products.length; i++) {
+                        let name = products[i].getElementsByTagName("name")[0].textContent;
+                        let price = products[i].getElementsByTagName("price")[0].textContent;
+                        let description = products[i].getElementsByTagName("description")[0].textContent;
+
+                        let listItem = document.createElement("li");
+                        listItem.innerHTML = `<strong>${name}</strong> - Rs. ${price} <br> ${description}`;
+                        productList.appendChild(listItem);
+                    }
+                }
+            };
+            xhr.send();
+        }
+
+        // Load XML data when page loads
+        window.onload = loadXMLData;
+    </script>
+
+</body>
+</html>

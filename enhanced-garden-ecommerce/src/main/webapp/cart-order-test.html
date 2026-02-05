@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>🛒 Cart & Order Page Test</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; background: #f5f5f5; }
+        .test-container { max-width: 800px; margin: 0 auto; background: white; padding: 30px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .test-section { margin: 25px 0; padding: 20px; border: 2px solid #e0e0e0; border-radius: 8px; }
+        .test-section h3 { color: #4CAF50; margin-top: 0; }
+        button { padding: 12px 24px; margin: 8px; background: #4CAF50; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 14px; }
+        button:hover { background: #45a049; }
+        button.secondary { background: #6c757d; }
+        button.secondary:hover { background: #5a6268; }
+        .status { margin: 15px 0; padding: 12px; border-radius: 5px; }
+        .success { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .error { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+        .info { background: #d1ecf1; color: #0c5460; border: 1px solid #bee5eb; }
+        .result { margin: 10px 0; padding: 10px; background: #f8f9fa; border-left: 4px solid #4CAF50; }
+        .cart-icon { font-size: 24px; vertical-align: middle; }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>🛒 Cart & Order Page Test Suite</h1>
+        <p>Complete test suite for cart functionality and order page creation</p>
+        
+        <div id="globalStatus" class="status info">Ready to test cart and order functionality...</div>
+        
+        <div class="test-section">
+            <h3>📋 Step 1: Load Cart System</h3>
+            <p>Load the cart JavaScript and initialize the system</p>
+            <button onclick="loadCartSystem()">Load Cart System</button>
+            <div id="loadStatus"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>👤 Step 2: User Authentication</h3>
+            <p>Login to test cart functionality (required for cart operations)</p>
+            <button onclick="testLogin()">Quick Login (testuser)</button>
+            <div id="loginStatus"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🛒 Step 3: Test Cart Display</h3>
+            <p>Test clicking the cart symbol to show cart contents</p>
+            <button onclick="testCartDisplay()">
+                <span class="cart-icon">🛒</span> Test Cart Symbol Click
+            </button>
+            <div id="cartDisplayStatus"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>➕ Step 4: Add Products to Cart</h3>
+            <p>Add test products to cart and verify cart updates</p>
+            <button onclick="addTestProducts()">Add Test Products</button>
+            <button onclick="viewCartAfterAdd()">View Cart After Adding</button>
+            <div id="addProductStatus"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🛍️ Step 5: Test Order Page Creation</h3>
+            <p>Test "Proceed to Checkout" button and order page creation</p>
+            <button onclick="testOrderPageCreation()">Create Order Page</button>
+            <button onclick="testOrderPlacement()">Test Order Placement</button>
+            <div id="orderPageStatus"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🚀 Step 6: Full Cart Workflow</h3>
+            <p>Complete end-to-end test: Login → Add products → Show cart → Create order → Place order</p>
+            <button onclick="runFullWorkflow()">🚀 Run Full Workflow</button>
+            <div id="workflowStatus"></div>
+        </div>
+        
+        <div class="test-section">
+            <h3>🔧 Emergency Tools</h3>
+            <p>Emergency functions for troubleshooting</p>
+            <button class="secondary" onclick="checkCartFunctions()">Check Cart Functions</button>
+            <button class="secondary" onclick="clearTestData()">Clear Test Data</button>
+            <button class="secondary" onclick="showDiagnostics()">Show Diagnostics</button>
+            <div id="emergencyStatus"></div>
+        </div>
+    </div>
+
+    <script>
+        function updateStatus(id, message, type = 'info') {
+            const element = document.getElementById(id);
+            element.innerHTML = `<div class="status ${type}">${message}</div>`;
+            console.log(`[${type.toUpperCase()}] ${message}`);
+        }
+
+        function updateGlobalStatus(message, type = 'info') {
+            const status = document.getElementById('globalStatus');
+            status.className = `status ${type}`;
+            status.textContent = message;
+        }
+
+        function loadCartSystem() {
+            updateStatus('loadStatus', '⏳ Loading cart system...', 'info');
+            
+            // Load the main JavaScript file
+            const script = document.createElement('script');
+            script.src = '/gar/enhanced-garden-ecommerce/js/simple-app.js';
+            script.onload = () => {
+                updateStatus('loadStatus', '✅ Cart system loaded successfully!', 'success');
+                updateGlobalStatus('Cart system ready - proceed to login', 'success');
+                
+                // Check if cart functions are available
+                if (typeof showCart === 'function' && typeof addToCartDB === 'function') {
+                    updateStatus('loadStatus', '✅ Cart system loaded - All functions available!', 'success');
+                } else {
+                    updateStatus('loadStatus', '⚠️ Cart system loaded but some functions missing', 'error');
+                }
+            };
+            script.onerror = () => {
+                updateStatus('loadStatus', '❌ Failed to load cart system', 'error');
+                updateGlobalStatus('Failed to load cart system', 'error');
+            };
+            document.head.appendChild(script);
+        }
+
+        function testLogin() {
+            updateStatus('loginStatus', '⏳ Logging in...', 'info');
+            
+            fetch('/gar/LoginServlet', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'username=testuser&password=test123'
+            })
+            .then(response => {
+                if (!response.ok) throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                return response.json();
+            })
+            .then(data => {
+                if (data.success) {
+                    window.currentUser = {
+                        id: data.user_id,
+                        username: data.username,
+                        fullName: data.full_name,
+                        email: data.email,
+                        userType: data.user_type || 'customer'
+                    };
+                    updateStatus('loginStatus', `✅ Login successful! Welcome ${data.full_name}`, 'success');
+                    updateGlobalStatus('User logged in - ready to test cart', 'success');
+                } else {
+                    throw new Error(data.message || 'Login failed');
+                }
+            })
+            .catch(error => {
+                updateStatus('loginStatus', `❌ Login failed: ${error.message}`, 'error');
+                updateGlobalStatus('Login failed', 'error');
+            });
+        }
+
+        function testCartDisplay() {
+            updateStatus('cartDisplayStatus', '⏳ Testing cart display...', 'info');
+            
+            if (!window.currentUser) {
+                updateStatus('cartDisplayStatus', '❌ Please login first', 'error');
+                return;
+            }
+
+            if (typeof showCart === 'function') {
+                try {
+                    showCart();
+                    updateStatus('cartDisplayStatus', '✅ Cart display function called successfully!', 'success');
+                    setTimeout(() => {
+                        const cartModal = document.getElementById('cartModal');
+                        if (cartModal && cartModal.style.display === 'block') {
+                            updateStatus('cartDisplayStatus', '✅ Cart modal is visible! Cart symbol click works!', 'success');
+                            updateGlobalStatus('Cart symbol working perfectly!', 'success');
+                        } else {
+                            updateStatus('cartDisplayStatus', '⚠️ Cart function called but modal not visible', 'error');
+                        }
+                    }, 1000);
+                } catch (error) {
+                    updateStatus('cartDisplayStatus', `❌ Error calling showCart: ${error.message}`, 'error');
+                }
+            } else {
+                updateStatus('cartDisplayStatus', '❌ showCart function not found', 'error');
+            }
+        }
+
+        function addTestProducts() {
+            updateStatus('addProductStatus', '⏳ Adding test products to cart...', 'info');
+            
+            if (!window.currentUser) {
+                updateStatus('addProductStatus', '❌ Please login first', 'error');
+                return;
+            }
+
+            const testProducts = [
+                { id: 1, name: 'Organic Tomatoes', price: 40, image: 'tomatoes.jpg' },
+                { id: 2, name: 'Fresh Carrots', price: 35, image: 'carrots.jpg' },
+                { id: 3, name: 'Garden Seeds', price: 15, image: 'seeds.jpg' }
+            ];
+
+            let addedCount = 0;
+            testProducts.forEach((product, index) => {
+                if (typeof addToCartDB === 'function') {
+                    addToCartDB(product.id, product.name, product.price, product.image)
+                    .then(() => {
+                        addedCount++;
+                        updateStatus('addProductStatus', `✅ Added ${addedCount}/${testProducts.length} products to cart`, 'success');
+                        if (addedCount === testProducts.length) {
+                            updateGlobalStatus('Test products added - ready for checkout', 'success');
+                        }
+                    })
+                    .catch(error => {
+                        updateStatus('addProductStatus', `❌ Failed to add ${product.name}: ${error.message}`, 'error');
+                    });
+                } else {
+                    updateStatus('addProductStatus', '❌ addToCartDB function not found', 'error');
+                }
+            });
+        }
+
+        function viewCartAfterAdd() {
+            if (typeof showCart === 'function') {
+                showCart();
+                updateStatus('addProductStatus', '✅ Cart opened - check if products are visible', 'info');
+            } else {
+                updateStatus('addProductStatus', '❌ Cannot open cart - function not found', 'error');
+            }
+        }
+
+        function testOrderPageCreation() {
+            updateStatus('orderPageStatus', '⏳ Testing order page creation...', 'info');
+            
+            if (!window.currentUser) {
+                updateStatus('orderPageStatus', '❌ Please login first', 'error');
+                return;
+            }
+
+            if (typeof createOrderPage === 'function') {
+                try {
+                    createOrderPage();
+                    updateStatus('orderPageStatus', '✅ Order page creation function called!', 'success');
+                    setTimeout(() => {
+                        // Check if order page content exists
+                        const orderPage = document.querySelector('.order-page-container');
+                        if (orderPage) {
+                            updateStatus('orderPageStatus', '✅ Order page created successfully! Check main content area.', 'success');
+                            updateGlobalStatus('Order page working perfectly!', 'success');
+                        } else {
+                            updateStatus('orderPageStatus', '⚠️ Order page function called but content not found', 'error');
+                        }
+                    }, 2000);
+                } catch (error) {
+                    updateStatus('orderPageStatus', `❌ Error creating order page: ${error.message}`, 'error');
+                }
+            } else {
+                updateStatus('orderPageStatus', '❌ createOrderPage function not found', 'error');
+            }
+        }
+
+        function testOrderPlacement() {
+            updateStatus('orderPageStatus', '⏳ Testing order placement (simulation)...', 'info');
+            
+            // This would simulate filling the order form and placing an order
+            if (typeof placeOrderFromPage === 'function') {
+                updateStatus('orderPageStatus', '✅ Order placement function is available!', 'success');
+            } else {
+                updateStatus('orderPageStatus', '❌ placeOrderFromPage function not found', 'error');
+            }
+        }
+
+        function runFullWorkflow() {
+            updateStatus('workflowStatus', '🚀 Starting full cart workflow...', 'info');
+            updateGlobalStatus('Running full workflow test...', 'info');
+            
+            // Step 1: Login
+            testLogin();
+            
+            setTimeout(() => {
+                // Step 2: Add products
+                addTestProducts();
+                
+                setTimeout(() => {
+                    // Step 3: Show cart
+                    testCartDisplay();
+                    
+                    setTimeout(() => {
+                        // Step 4: Create order page
+                        testOrderPageCreation();
+                        updateStatus('workflowStatus', '✅ Full workflow completed! Check each step above.', 'success');
+                        updateGlobalStatus('Full workflow test completed!', 'success');
+                    }, 3000);
+                }, 2000);
+            }, 1000);
+        }
+
+        function checkCartFunctions() {
+            const functions = ['showCart', 'addToCartDB', 'createOrderPage', 'placeOrderFromPage'];
+            let results = [];
+            
+            functions.forEach(func => {
+                if (typeof window[func] === 'function') {
+                    results.push(`✅ ${func}: Available`);
+                } else {
+                    results.push(`❌ ${func}: Missing`);
+                }
+            });
+            
+            updateStatus('emergencyStatus', results.join('<br>'), 'info');
+        }
+
+        function clearTestData() {
+            updateStatus('emergencyStatus', '🧹 Clearing test data...', 'info');
+            
+            // Clear cart
+            if (typeof clearCartDB === 'function') {
+                clearCartDB();
+            }
+            
+            // Close any open modals
+            const modals = document.querySelectorAll('.modal');
+            modals.forEach(modal => modal.style.display = 'none');
+            
+            updateStatus('emergencyStatus', '✅ Test data cleared', 'success');
+        }
+
+        function showDiagnostics() {
+            const diagnostics = `
+                <strong>System Diagnostics:</strong><br>
+                • Current User: ${window.currentUser ? window.currentUser.fullName : 'Not logged in'}<br>
+                • Cart Functions: ${typeof showCart === 'function' ? 'Loaded' : 'Missing'}<br>
+                • Order Functions: ${typeof createOrderPage === 'function' ? 'Loaded' : 'Missing'}<br>
+                • JavaScript Errors: Check browser console<br>
+                • Cart Modal: ${document.getElementById('cartModal') ? 'Exists' : 'Missing'}<br>
+                • Main Content: ${document.getElementById('mainContent') ? 'Available' : 'Missing'}
+            `;
+            updateStatus('emergencyStatus', diagnostics, 'info');
+        }
+
+        // Auto-load cart system on page load
+        window.onload = () => {
+            updateGlobalStatus('Test page loaded - click "Load Cart System" to begin', 'info');
+        };
+    </script>
+</body>
+</html>

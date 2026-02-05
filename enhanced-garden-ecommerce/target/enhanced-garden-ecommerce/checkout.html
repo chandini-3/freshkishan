@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Garden Shop</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            padding: 20px;
+            text-align: center;
+        }
+        .container {
+            max-width: 500px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #4CAF50;
+        }
+        label {
+            font-weight: bold;
+            display: block;
+            margin-top: 10px;
+            text-align: left;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+        .order-summary {
+            margin-top: 20px;
+            padding: 10px;
+            background: #f4f4f4;
+            border-radius: 8px;
+            text-align: left;
+        }
+        .total {
+            font-weight: bold;
+            font-size: 18px;
+            color: #ff9800;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 12px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 15px;
+            transition: background-color 0.3s ease;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        .message {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            display: none;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        #order-items {
+            list-style-type: none;
+            padding: 0;
+        }
+        #order-items li {
+            margin-bottom: 5px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🛒 Checkout</h1>
+        <form id="checkout-form">
+            <label for="name">Full Name</label>
+            <input type="text" id="name" required placeholder="Enter your full name">
+
+            <label for="address">Shipping Address</label>
+            <input type="text" id="address" required placeholder="Enter your address">
+
+            <label for="payment">Select Payment Method</label>
+            <select id="payment">
+                <option value="credit-card">💳 Credit Card</option>
+                <option value="upi">📱 UPI</option>
+                <option value="cod">💵 Cash on Delivery</option>
+            </select>
+
+            <div class="order-summary">
+                <h3>📝 Order Summary</h3>
+                <ul id="order-items"></ul>
+                <p class="total">Total: $<span id="total-price">0.00</span></p>
+            </div>
+
+            <button type="submit" id="submit-btn">✅ Place Order</button>
+            <p class="message" id="message"></p>
+        </form>
+    </div>
+
+    <script>
+        // Get references to DOM elements
+        const cartForm = document.getElementById("checkout-form");
+        const orderItems = document.getElementById("order-items");
+        const totalElement = document.getElementById("total-price");
+        const submitButton = document.getElementById("submit-btn");
+        const messageBox = document.getElementById("message");
+
+        // Retrieve cart and total price from localStorage
+        let cart = [];
+        let totalPrice = 0;
+
+        try {
+            cart = JSON.parse(localStorage.getItem("cart")) || [];
+            totalPrice = parseFloat(localStorage.getItem("totalPrice")) || 0;
+        } catch (error) {
+            console.error("Error parsing cart data:", error);
+            showMessage("⚠️ Error loading cart. Please try again.", "error");
+        }
+
+        // Populate order summary
+        function populateOrderSummary() {
+            // Clear previous items
+            orderItems.innerHTML = '';
+
+            // Add items to the list
+            if (cart.length === 0) {
+                const li = document.createElement("li");
+                li.textContent = "No items in cart";
+                orderItems.appendChild(li);
+                submitButton.disabled = true;
+            } else {
+                cart.forEach(item => {
+                    const li = document.createElement("li");
+                    li.textContent = `${item.name} - $${item.price.toFixed(2)}`;
+                    orderItems.appendChild(li);
+                });
+                submitButton.disabled = false;
+            }
+
+            // Update total price
+            totalElement.textContent = totalPrice.toFixed(2);
+        }
+
+        // Populate order summary on page load
+        populateOrderSummary();
+
+        // Handle form submission
+        cartForm.addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            // Get form values
+            const name = document.getElementById("name").value.trim();
+            const address = document.getElementById("address").value.trim();
+            const payment = document.getElementById("payment").value;
+
+            // Validate input fields
+            if (name === "" || address === "") {
+                showMessage("⚠️ Please fill in all fields.", "error");
+                return;
+            }
+
+            // Check if cart is empty
+            if (cart.length === 0) {
+                showMessage("⚠️ Your cart is empty. Please add items before checkout.", "error");
+                return;
+            }
+
+            // Disable button and show processing state
+            submitButton.disabled = true;
+            submitButton.textContent = "⏳ Placing Order...";
+
+            // Prepare order data
+            const orderData = {
+                name: name,
+                address: address,
+                payment: payment,
+                totalPrice: totalPrice,
+                items: cart
+            };
+
+            // Simulate order placement (replace with actual backend call)
+            simulateOrderPlacement(orderData);
+        });
+
+        // Simulate order placement (mock function)
+        function simulateOrderPlacement(orderData) {
+            // Simulating network request with setTimeout
+            setTimeout(() => {
+                try {
+                    // Simulate potential network or server errors
+                    const randomError = Math.random();
+                    if (randomError < 0.2) {  // 20% chance of error
+                        throw new Error("Simulated server error");
+                    }
+
+                    // Successful order placement
+                    showMessage("🎉 Thank you for your order! Your order has been placed.", "success");
+                    
+                    // Clear cart and local storage
+                    localStorage.removeItem("cart");
+                    localStorage.removeItem("totalPrice");
+
+                    // Redirect to shop page after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = "shop.html";
+                    }, 2000);
+
+                } catch (error) {
+                    // Handle order placement error
+                    console.error("Order placement error:", error);
+                    showMessage("⚠️ Error placing order. Please try again later.", "error");
+                    
+                    // Reset submit button
+                    submitButton.disabled = false;
+                    submitButton.textContent = "✅ Place Order";
+                }
+            }, 1500);  // Simulate network delay
+        }
+
+        // Function to show messages
+        function showMessage(message, type) {
+            messageBox.textContent = message;
+            messageBox.className = `message ${type}`;
+            messageBox.style.display = "block";
+
+            // Automatically hide message after 5 seconds
+            setTimeout(() => {
+                messageBox.style.display = "none";
+            }, 5000);
+        }
+
+        // Prevent form resubmission on page refresh
+        if (window.history.replaceState) {
+            window.history.replaceState(null, null, window.location.href);
+        }
+    </script>
+</body>
+</html>

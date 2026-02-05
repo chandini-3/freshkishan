@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up Page</title>
+</head>
+<body>
+    <h1>🌱 Garden Sign Up</h1>
+    <form id="signup-form">
+        <div class="input-group">
+            <div class="input-group">
+                <label for="name">Full Name</label><br>
+                <input type="text" id="name" placeholder="Enter your full name"><br>
+            </div>
+            <div class="input-group">
+                <label for="email">Email</label><br>
+                <input type="email" id="email" placeholder="Enter your email"><br>
+            </div>
+            <label for="username">Username</label><br>
+            <input type="text" id="username" placeholder="Enter your username" required><br>
+        </div>
+        <div class="input-group">
+            <label for="password">Password</label><br>
+            <input type="password" id="password" placeholder="Enter your password" required><br>
+            <div>
+                <label for = "phonenmber">phonenumber</label><br>
+                <input type = "number" id=" phonenmber" placeholder = "Enter your phonenumber" required><br>
+            </div>
+        </div>
+        <button type="submit">Sign Up</button><br>
+    </form>
+
+    <script>
+        // Handle form submission
+        document.getElementById('signup-form').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent the default form submission
+            alert('Registration Successful! Redirecting...'); // Optional alert message
+            window.location.href = 'garden sign-in.html'; // Redirect to success page
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garden Web - Top Menu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #4CAF50;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            margin: 0;
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+        .nav-button {
+            background: white;
+            color: #4CAF50;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+        }
+        .nav-button:hover {
+            background: #39342c;
+            color: white;
+        }
+        .nav-button img {
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="nav-buttons">
+        <button class="nav-button" onclick="parent.rightFrame.location='quality_products.html'">
+            <img src="seeds.png" alt="Quality"> 🌻 Quality Products
+        </button>
+
+        <button class="nav-button" onclick="parent.rightFrame.location='eco.html'">
+            <img src="eco.png" alt="Eco"> 🌎 Eco-Friendly Solutions
+        </button>
+
+        <button class="nav-button" onclick="parent.rightFrame.location='diy_gardening.html'">
+            <img src="diy.png" alt="DIY"> 🏡 DIY Gardening Ideas
+        </button>
+
+        <button class="nav-button" onclick="parent.rightFrame.location='community.html'">
+            <img src="com.jpg" alt="Community"> 🌼 Community Support
+        </button>
+    </div>
+
+</body>
+</html>

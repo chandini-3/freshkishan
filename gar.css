@@ -1,0 +1,120 @@
+/* General Styling */
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to bottom, #c3e7c0, #94d3ac);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+   /* background-image: url('background.jpg'); /* Add your background image here */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Login Container */
+.login-container {
+    background: rgba(255, 255, 255, 0.9); /* Semi-transparent white for contrast */
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+    width: 300px;
+    text-align: center;
+}
+
+/* Heading */
+.login-container h1 {
+    color: #4CAF50;
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Input Fields */
+.input-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.input-group label {
+    font-size: 14px;
+    color: #555;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+}
+
+/* Button */
+button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 100%;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+/* Signup Link */
+.login-container p {
+    margin-top: 15px;
+    font-size: 14px;
+    color: #777;
+}
+
+.login-container a {
+    color: #4CAF50;
+    text-decoration: none;
+}
+
+.login-container a:hover {
+    text-decoration: underline;
+}
+.form-with-background {
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 12px; /* Further reduced padding */
+    border-radius: 8px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+    width: 220px; /* Further reduced width */
+    color: white;
+    font-family: Arial, sans-serif;
+    opacity: 0;
+    animation: fadeIn 1s forwards;
+}
+
+input {
+    width: 100%;
+    padding: 6px; /* Reduced padding */
+    margin: 4px 0;
+    border: 1.5px solid #4c93af;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    font-size: 13px; /* Adjusted font size */
+}
+
+button {
+    width: 100%;
+    padding: 6px; /* Adjusted button padding */
+    background-color: #4c93af;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px; /* Adjusted font size */
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #2d9c6a;
+}
